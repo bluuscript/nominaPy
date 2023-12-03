@@ -1,0 +1,119 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>({{ cant_mis_solicitudes  }}) Mis Solicitudes</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+</head>
+
+<body>
+
+    <div class="container-fluid ">
+        <div class="row flex-nowrap">
+            {% if tipo_personal == "RRHH" %}
+                {% include 'partials/sidebar_rrhh.html' %}
+            {% else %}
+                {% include 'partials/sidebar_personal.html' %}
+            {% endif %}
+            <div class="col py-3 overflow-auto vh-100">
+                <h1 class="h1 text-center">Mis Solicitudes</h1>
+                <hr>
+            {% if mis_solicitudes is not None %}
+                <div class="vh-100">
+                    <div class="row rows-cols-3 g-3 mt-3">
+                        {% for solicitud in mis_solicitudes %}
+                        <div class="col-md-4">
+                            <div class="card rounded-4 overflow-hidden" style="height: 18rem;">
+                                <div class="card-body position-relative">
+                                    <h6 class="card-title border border-dark-subtle rounded rounded-4 position-absolute start-0 top-0 p-1 ms-1 mt-1" style="width: max-content;">
+                                        <strong># {{ num_solicitudes_pagina|add:forloop.counter }}</strong>
+                                    </h6>
+                                    <div class="card-header border border-primary rounded rounded-4 py-2 px-2 mt-4">
+                                        <h6 class="card-title mb-1 mt-0"><strong>Nombre:</strong> {{ solicitud.nombre_solicitante }}</h6>
+                                        <h6 class="card-title my-1"><strong>Asunto:</strong> {{ solicitud.asunto }}</h6>
+                                        <h6 class="card-title mt-1 mb-0"><strong>Fecha Emisión:</strong> {{ solicitud.fecha_emision|date:"d-m-Y" }}</h6>
+                                    </div>
+                                    <h6 class="card-title my-1 overflow-auto"><strong>Descripción:</strong></h6>
+                                    <p class="card-text">
+                                        {{ solicitud.descripcion }}
+                                    </p>
+                                </div>
+                                <div class="card-footer text-center">
+                                    <b class="fs-5">Estado:</b>
+                                    {% if solicitud.estado == "EN PROCESO" %}
+                                        <button class="btn btn-warning rounded-5 disabled opacity-100 fw-bold">{{ solicitud.estado }}</button>
+                                    {% elif solicitud.estado == "RECHAZADA" %}
+                                        <button class="btn btn-danger rounded-5 disabled opacity-100 fw-bold">{{ solicitud.estado }}</button>
+                                    {% else %}
+                                        <button class="btn btn-success rounded-5 disabled opacity-100 fw-bold">{{ solicitud.estado }}</button>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <!-- Paginación de Mis Solicitudes -->
+                <nav aria-label="Paginación de Solicitudes" class="text-center" style="padding-top: 22em;">
+                    <ul class="pagination justify-content-center">
+                    {% if num_pagina_actual > 1 %}
+                        <li class="page-item">
+                            <a class="page-link rounded-start-4" href="{% url 'ver-solicitudes' %}?page={{ num_pagina_actual|add:'-1' }}" title="Página Anterior">Anterior</a>
+                        </li>
+                    {% endif %}
+                    {% for num_pagina in lista_num_paginas %}
+                        {% if num_pagina == num_pagina_actual %}
+                            <li class="page-item" aria-current="page">
+                                <a class="page-link active disabled bg-primary text-dark" href="{% url 'ver-solicitudes' %}?page={{ num_pagina_actual }}" title="Página Actual">{{ num_pagina }}</a>
+                            </li>
+                        {% else %}
+                            <li class="page-item" aria-current="page">
+                                <a class="page-link" href="{% url 'ver-solicitudes' %}?page={{ num_pagina }}">{{ num_pagina }}</a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                    {% if num_pagina_actual <  cantidad_paginas %}
+                        <li class="page-item">
+                            <a class="page-link rounded-end-4" href="{% url 'ver-solicitudes' %}?page={{ num_pagina_actual|add:'1' }}">Siguiente</a>
+                        </li>
+                    {% endif %}
+                    </ul>
+                </nav>
+                <!-- Termina Paginación -->
+            {% else %}
+                <article class="d-flex align-items-center justify-content-center h-100 card rounded-5  text-bg-dark">
+                    <h2 class="h2  fw-bold text-danger">
+                        No tienes ninguna solicitud ingresada
+                    </h2>
+                    <h3 class="h3 fw-semibold">
+                        Puedes enviar una aquí <a href="{% url 'enviar-solicitud' %}">Enviar Solicitud</a>
+                    </h3>
+                </article>
+            {% endif %}
+            </div>
+        </div>
+    </div>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <!-- <script>
+        // Obtener una referencia al elemento de entrada de color y al párrafo
+        const colorInput = document.getElementById('color-input');
+        const texto = document.getElementsByClassName('container-fluid');
+
+        // Agregar un evento input al elemento de entrada de color
+        colorInput.addEventListener('input', () => {
+            // Obtener el valor de color seleccionado
+            const colorSeleccionado = colorInput.value;
+
+            // Iterar a través de todos los elementos con la clase "table" y establecer el color en cada uno de ellos
+            for (let i = 0; i < texto.length; i++) {
+                texto[i].style.color = colorSeleccionado;
+            }
+        });
+    </script> -->
+</body>
+
+</html>

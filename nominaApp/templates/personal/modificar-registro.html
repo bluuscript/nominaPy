@@ -1,0 +1,189 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Registro - Modificar</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+</head>
+
+<body>
+
+    <div class="container-fluid">
+        <div class="row flex-nowrap">
+            {% if tipo_personal == "RRHH" %}
+                {% include 'partials/sidebar_rrhh.html' %}
+            {% else %}
+                {% include 'partials/sidebar_personal.html' %}
+            {% endif %}
+            <div class="col py-3 overflow-auto vh-100">
+                <div class="container-fluid mt-4">
+                    <h1 class="h1 text-center">Modificar Mi Registro</h1>
+                {% if mi_registro is not None %}
+                    <form class="row row-cols-md-4 mt-5 justify-content-center" action="{% url 'modificar-registro' %}"
+                        method="post">
+                        {% csrf_token %}
+                        <div class="col-md">
+                            <h3>Datos Personales</h3>
+                            <div class="form-group mb-3 text-start">
+                                <label class="form-label" for="nombreCompleto">Nombre Completo</label>
+                                <input class="form-control" type="text" name="nombrePersonal"
+                                    id="nombreCompleto" placeholder="Ej: Juan José Vargas Perez"
+                                    value='{{ mi_registro.personalNombre }}'>
+                            </div>
+                            <div class="form-group mb-3 text-start">
+                                <label class="form-label" for="rut">RUT</label>
+                                <input class="form-control disabled opacity-75" type="text" name="rutPersonal" id="rut"
+                                    placeholder="Ej: 12345678-k" value='{{ mi_registro.personalRut }}' readonly>
+                            </div>
+                            <div class="form-group mb-3 text-start">
+                                <label class="form-label" for="genero">Género</label>
+                                <select class="form-select" name="generoPersonal" id="genero">
+                                    <option value='{{ mi_registro.personalGenero }}' selected>
+                                        {{ mi_registro.personalGenero }}
+                                    </option>
+                                    <option value="Femenino">Femenino</option>
+                                    <option value="Masculino">Masculino</option>
+                                    <option value="Otro">Otro</option>
+                                </select>
+                            </div>
+                            <div class="form-group mb-3 text-start">
+                                <label class="form-label" for="direccion">Dirección</label>
+                                <input class="form-control" type="text" name="direccionPersonal" id="direccion"
+                                    placeholder="Ej: Antonio Varas 1200" value='{{ mi_registro.personalDireccion }}'>
+                            </div>
+                            <div class="dropdown">
+                                <button class="btn btn-secondary dropdown-toggle fs-5 rounded-5" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                  Números de Celular
+                                </button>
+                                <ul class="dropdown-menu">  
+                                    {% for  telefono in mi_registro.telefonosPersonal %}
+                                    <li class="dropdown-item bg-primary">
+                                        <div class="input-group">
+                                            <span class="input-group-text" id="telefonoPersonal">+569</span>
+                                            <input type="text" class="form-control" id="telefonoPersonal" name="telefonoPersonal" value="{{ telefono }}" placeholder="1234 5678" aria-label="Número Telefono" aria-describedby="telefonoPersonal">
+                                        </div>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md">
+                            <h3>Datos Laborales</h3>
+                            <div class="form-group mb-3 text-start">
+                                <label class="form-label" for="cargo">Cargo</label>
+                                <input class="form-control disabled opacity-75" type="text" name="cargoPersonal" id="cargo"
+                                    placeholder="Ej: Operador" value="{{ mi_registro.cargo.cargoNombre }}" readonly>
+                            </div>
+                            <div class="form-group mb-3 text-start">
+                                <label class="form-label" for="cargoSueldo">Sueldo</label>
+                                <input class="form-control disabled opacity-75" type="number" step="0.01" min="0" name="cargoSueldo" id="cargoSueldo" value="{{ mi_registro.cargo.cargoSueldo }}" placeholder="Ej: 550602.27" readonly>
+                            </div>
+                            <div class="form-group mb-3 text-start">
+                                <label class="form-label" for="fechaIngreso">Fecha Ingreso</label>
+                                <input class="form-control disabled opacity-75" type="date" name="fechaIngresoPersonal" id="fechaIngreso"
+                                    value="{{ mi_registro.cargo.cargoFechaIngreso|date:'Y-m-d' }}" readonly>
+                            </div>
+                            <div class="form-group mb-3 text-start">
+                                <label class="form-label" for="areaTrabajo">Área de Trabajo</label>
+                                <input class="form-control disabled opacity-75" type="text" name="areaPersonal" id="areaTrabajo"
+                                    placeholder="Ej: Logística" value="{{ mi_registro.cargo.areaNombre }}" readonly>
+                            </div>
+                            <div class="form-group mb-3 text-start">
+                                <label class="form-label" for="departamento">Departamento</label>
+                                <input class="form-control disabled opacity-75" type="text" name="departamentoPersonal" id="departamento"
+                                    placeholder="Ej: Reparto en Área" value="{{ mi_registro.cargo.departamentoNombre }}"
+                                    readonly>
+                            </div>
+                        </div>
+                        <div class="col-md">
+                            <h3>Contactos de Emergencia</h3>
+                        {% for contacto in mi_registro.contactosEmergencia %}
+                            <div class="form-group mb-3 text-start">
+                                <label class="form-label" for="rutContacto">RUT</label>
+                                <input class="form-control" type="text" name="rutContacto" id="rutContacto"
+                                    placeholder="Ej: 12345678-1" value="{{ contacto.contactoRut }}">
+                            </div>
+                            <div class="form-group mb-3 text-start">
+                                <label class="form-label" for="nombreContacto">Nombre Contacto</label>
+                                <input class="form-control" type="text" name="nombreContacto" id="nombreContacto"
+                                    placeholder="Ej: Fernanda Oyarzo" value="{{ contacto.contactoNombre }}">
+                            </div>
+                            <div class="form-group mb-3 text-start">
+                                <label class="form-label" for="relacionContacto">Relación con Trabajador</label>
+                                <input class="form-control" type="text" name="relacionContactoPersonal"
+                                    id="relacionContacto" placeholder="Ej: Esposa" value="{{ contacto.contactoRelacionPersonal }}">
+                            </div>
+                            <div class="dropdown">
+                                <button class="btn btn-secondary dropdown-toggle fs-5 rounded-5" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                  Números de Celular
+                                </button>
+                                <ul class="dropdown-menu">
+                                {% for telefono in contacto.telefonosContacto  %}
+                                  <li class="dropdown-item bg-primary">
+                                    <div class="input-group">
+                                        <span class="input-group-text" id="telefonoContacto">+569</span>
+                                        <input type="text" class="form-control" id="telefonoContacto" name="telefonoContacto" value="{{ telefono }}" placeholder="1234 5678" aria-label="Número Celular">
+                                    </div>
+                                  </li>
+                                {% endfor %}
+                                </ul>
+                            </div>
+                        {% endfor %}
+                        </div>
+                        <div class="col-md">
+                            <h3>Cargas Familiares</h3>
+                        {% for carga in mi_registro.cargaFamiliar %}
+                            <div class="form-group mb-3 text-start">
+                                <label class="form-label" for="rutCarga">RUT</label>
+                                <input class="form-control" type="text" name="rutCarga" id="rutCarga"
+                                    placeholder="Ej: 19453487-2" value="{{ carga.cargaRut }}">
+                            </div>
+                            <div class="form-group mb-3 text-start">
+                                <label class="form-label" for="nombreCarga">Nombre Carga</label>
+                                <input class="form-control" type="text" name="nombreCarga" id="nombreCarga"
+                                    placeholder="Ej: Andrea Vargas" value="{{ carga.cargaNombre }}">
+                            </div>
+                            <div class="form-group mb-3 text-start">
+                                <label class="form-label" for="parentesco">Parentesco</label>
+                                <input class="form-control" type="text" name="parentescoCarga" id="parentesco"
+                                    placeholder="Ej: Hija" value="{{ carga.cargaParentesco }}">
+                            </div>
+                            <div class="form-group mb-3 text-start">
+                                <label class="form-label" for="generoCarga">Género</label>
+                                <select class="form-select" name="generoCarga" id="generoCarga">
+                                    <option value="{{ carga.cargaGenero }}" selected>
+                                        {{ carga.cargaGenero }}
+                                    </option>
+                                    <option value="Femenino">Femenino</option>
+                                    <option value="Masculino">Masculino</option>
+                                    <option value="Otro">Otro</option>
+                                </select>
+                            </div>
+                        {% endfor %}
+                        </div>
+                        <button type="submit"
+                            class="btn btn-primary btn-lg mt-5 rounded-5">Confirmar</button>
+                    </form>
+                {% else %}
+                    <article class="d-flex align-items-center justify-content-center vh-100 card rounded-5  text-bg-dark">
+                        <h2 class="h2  fw-bold text-danger">
+                            Tu registro aún no es ingresado 😞 
+                        </h2>
+                        <h3 class="h3 fw-semibold">
+                            Comunicate con Recursos Humanos
+                        </h3>
+                    </article>
+                {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+</body>
+
+</html>

@@ -1,0 +1,76 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="utf-8">
+	<meta name="author" content="TriMark">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<meta name="description" content="Inicio de Sesión - TriMark">
+	<title>Inicio de Sesión</title>
+	<link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+</head>
+
+<body>
+	<section class="h-100">
+		<div class="container h-100">
+			<div class="row justify-content-sm-center h-100">
+				<div class="col-xxl-4 col-xl-5 col-lg-5 col-md-7 col-sm-9">
+					<div class="text-center my-5">
+						<img class="rounded-5" src="{% static 'img/sign_out_logo.png' %}" alt="logo" width="150">
+					</div>
+					<div class="card shadow-lg rounded-4 overflow-hidden bg-dark">
+						<div class="card-body p-5">
+							<h1 class="fs-4 card-title fw-bold mb-4 text-center">Inicio de Sesión</h1>
+							<form action="{% url 'login' %}" method="POST" class="needs-validation" novalidate="" >
+								{% csrf_token %}
+								<div class="mb-3">
+									<label class="mb-2 text-muted fw-bold" for="email">Correo Eléctronico</label>
+									<input id="email" type="email" class="form-control" name="email" required autofocus autocomplete="on">
+									<div class="invalid-feedback">
+										Correo inválido
+									</div>
+								</div>
+
+								<div class="mb-3">
+									<div class="mb-2 w-100">
+										<label class="text-muted fw-bold" for="password">Contraseña</label>
+										<a href="{% url 'forgot' %}" class="float-end">
+											Olvidaste tu contraseña?
+										</a>
+									</div>
+									<input id="password" type="password" class="form-control" name="password" required>
+								    <div class="invalid-feedback">
+								    	Contraseña requerida
+							    	</div>
+								</div>
+
+								<div class="d-flex align-items-center">
+									<div class="form-check">
+										<input type="checkbox" name="remember" id="remember" class="form-check-input">
+										<label for="remember" class="form-check-label">Recuerdame</label>
+									</div>
+									<button type="submit" class="btn btn-primary ms-auto rounded-5 fw-bold">
+										Iniciar Sesión
+									</button>
+								</div>
+							</form>
+						</div>
+						<div class="card-footer py-3 border-0">
+							<div class="text-center">
+								No tienes Cuenta? &nbsp <a href="{% url 'register' %}" class="text-primary">Crear una</a>
+							</div>
+						</div>
+					</div>
+                    <hr>
+					<div class="text-center mt-5 text-muted">
+						Copyright &copy; 2023 &mdash; TriMark
+					</div>
+                    <br>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<script src="{% static 'js/login/login.js' %}"></script>
+</body>
+</html>

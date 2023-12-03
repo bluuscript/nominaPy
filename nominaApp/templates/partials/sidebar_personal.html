@@ -1,0 +1,76 @@
+{% load static %}
+            <!-- Sidebar para usuario PE -->
+            <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dark">
+                <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
+                    <a href="/personal/inicio/" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+                        <img class="rounded-circle me-2 " src="{% static 'img/sidebar_logo.png' %}" alt="Logo TriMark" width="180">
+                    </a>
+                    <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
+                        <li class="nav-item">
+                            <a href="#mi-registro" data-bs-toggle="collapse" class="nav-link align-middle px-0">
+                                <i class="bi bi-file-earmark-spreadsheet fs-4"></i> <span class="ms-1 d-none d-sm-inline">Mi
+                                    Registro</span>
+                            </a>
+                            <ul class="collapse nav flex-column ms-3 fs-6" id="mi-registro" data-bs-parent="#menu">
+                                <li class="w-100">
+                                    <a href="/personal/mi-registro/" class="nav-link px-0">
+                                        <i class="bi bi-table fs-6"></i></i>
+                                        <span class="d-none d-sm-inline ms-1">Ver</span>
+                                    </a>
+                                </li>
+                                <li class="w-100">
+                                    <a href="/personal/modificar-registro/" class="nav-link px-0">
+                                        <i class="bi bi-person-add fs-6"></i>
+                                        <span class="d-none d-sm-inline ms-1">Modificar</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#solicitudes" data-bs-toggle="collapse" class="nav-link align-middle px-0">
+                                <i class="bi bi-send-exclamation fs-4"></i> <span class="ms-1 d-none d-sm-inline">Mis
+                                    Solicitudes</span>
+                            </a>
+                            <ul class="collapse nav flex-column ms-3 fs-6" id="solicitudes" data-bs-parent="#menu">
+                                <li class="w-100">
+                                    <a href="/personal/mis-solicitudes/" class="nav-link px-0">
+                                        <i class="bi bi-eye fs-6"></i>
+                                        <span class="d-none d-sm-inline ms-1">Ver</span>
+                                    </a>
+                                </li>
+                                <li class="w-100">
+                                    <a href="/personal/enviar-solicitud/" class="nav-link px-0">
+                                        <i class="bi bi-send-plus fs-6"></i>
+                                        <span class="d-none d-sm-inline ms-1">Enviar</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <hr>
+                    <div class="dropdown pb-4">
+                        <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+                            id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="https://static.vecteezy.com/system/resources/previews/013/360/247/non_2x/default-avatar-photo-icon-social-media-profile-sign-symbol-vector.jpg"
+                                alt="Imagen" width="40" height="40" class="rounded-circle">
+                            <span class="d-none d-sm-inline mx-1 text-truncate overflow-hidden" style="max-width: 8em;" title="{{ rut_usuario }}">
+                                {{ username }}
+                            </span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
+                            <li><a class="dropdown-item" href="#">Perfil</a></li>
+                            <li><a class="dropdown-item" href="#">Configuración</a></li>
+                            <li>
+                                <div class="d-flex dropdown-item">
+                                    <label for="color-input">Color Texto</label>
+                                    <input type="color" class="mx-3" id="color-input">
+                                </div>
+                            </li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" href="/logout/">Cerrar Sesión</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>

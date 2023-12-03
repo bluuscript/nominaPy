@@ -1,0 +1,123 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>({{ cantidad_solicitudes }}) Solicitudes del Personal</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row flex-nowrap">
+            {% include 'partials/sidebar_rrhh.html' %}
+            <div class="col py-3 overflow-auto vh-100">
+                <h1 class="text-center fw-bold mt-2">Solicitudes del Personal</h1>
+                <hr> 
+            {% if solicitudes_personal is not None %}
+                <div class="vh-100">
+                    <div class="row rows-cols-3 g-3 mt-3">
+                        {% for solicitud in solicitudes_personal %}
+                        <!-- Mostrar solo solicitudes con estado EN PROCESO
+                            y que el ru solicitante no coincida con el de este ususario
+                            solicitud.estado == "EN PROCESO" and rut_usuario != solicitud.rut_solicitante 
+                        -->
+                            <div class="col-md-4">
+                                <div class="card rounded-4 overflow-hidden" style="height: 18rem;">
+                                    <div class="card-body position-relative">
+                                        <h6 class="card-title border border-dark-subtle rounded rounded-4 position-absolute start-0 top-0 p-1 ms-1 mt-1" style="width: max-content;">
+                                            <strong># {{ num_solicitudes_pagina|add:forloop.counter }}</strong>
+                                        </h6>
+                                        <div class="card-header border border-primary rounded rounded-4 py-2 px-2 mt-4">
+                                            <h6 class="card-title mb-1 mt-0"><strong>Nombre:</strong> {{ solicitud.nombre_solicitante }}</h6>
+                                            <h6 class="card-title my-1"><strong>Asunto:</strong> {{ solicitud.asunto }}</h6>
+                                            <h6 class="card-title mt-1 mb-0"><strong>Fecha Emisión:</strong> {{ solicitud.fecha_emision|date:"d-m-Y" }}</h6>
+                                        </div>
+                                        <h6 class="card-title my-1 overflow-auto"><strong>Descripción:</strong></h6>
+                                        <p class="card-text">
+                                            {{ solicitud.descripcion }}
+                                        </p>
+                                    </div>
+                                    <div class="card-footer d-flex justify-content-center">
+                                        <form action="{% url 'solicitudes' %}" method="post">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="idSolicitud" value="{{ solicitud.solicitud_uuid }}">
+                                            <input type="hidden" name="estadoSolicitud" value="ACEPTADA">
+                                            <button type="submit" class="btn btn-lg btn-primary rounded-5 mx-1">Aceptar</button>
+                                        </form>
+                                        <form action="{% url 'solicitudes' %}" method="post">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="idSolicitud" value="{{ solicitud.solicitud_uuid }}">
+                                            <input type="hidden" name="estadoSolicitud" value="RECHAZADA">
+                                            <button type="submit" class="btn btn-lg btn-danger rounded-5 mx-1">Rechazar</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <!-- Paginación de Solicitudes del Personal-->
+                <nav aria-label="Paginación de Solicitudes" class="text-center" style="padding-top: 22em;">
+                    <ul class="pagination justify-content-center">
+                    {% if num_pagina_actual > 1 %}
+                        <li class="page-item">
+                            <a class="page-link rounded-start-4" href="{% url 'solicitudes' %}?page={{ num_pagina_actual|add:'-1' }}" title="Página Anterior">Anterior</a>
+                        </li>
+                    {% endif %}
+                    {% for num_pagina in lista_num_paginas %}
+                        {% if num_pagina == num_pagina_actual %}
+                            <li class="page-item" aria-current="page">
+                                <a class="page-link active disabled bg-primary text-dark" href="{% url 'solicitudes' %}?page={{ num_pagina_actual }}" title="Página Actual">{{ num_pagina }}</a>
+                            </li>
+                        {% else %}
+                            <li class="page-item" aria-current="page">
+                                <a class="page-link" href="{% url 'solicitudes' %}?page={{ num_pagina }}">{{ num_pagina }}</a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                    {% if num_pagina_actual <  cantidad_paginas %}
+                        <li class="page-item">
+                            <a class="page-link rounded-end-4" href="{% url 'solicitudes' %}?page={{ num_pagina_actual|add:'1' }}">Siguiente</a>
+                        </li>
+                    {% endif %}
+                    </ul>
+                </nav>
+                <!-- Termina Paginación -->
+            {% else %}
+                <article class="d-flex align-items-center justify-content-center h-100 card rounded-5  text-bg-dark">
+                    <h2 class="h2  fw-bold text-danger">
+                        No existen solicitudes ingresadas del Personal
+                    </h2>
+                </article>
+            {% endif %}
+            </div>
+        </div>
+    </div>
+    <!-- <script>
+        window.onload = () => {
+            // Crear una instancia del objeto Date para la fecha y hora actual
+            const fechaActual = new Date();
+
+            // Obtener los componentes de la fecha (día, mes y año)
+            const dia = fechaActual.getDate().toString().padStart(2, '0');
+            const mes = (fechaActual.getMonth() + 1).toString().padStart(2, '0'); // Sumamos 1 porque en JavaScript los meses van de 0 a 11
+            const año = fechaActual.getFullYear();
+
+            // Formatear la fecha en el formato "dd/mm/yyyy"
+            const fechaFormateada = `${dia}/${mes}/${año}`;
+
+            //const hora = fechaActual.getHours() + ':' + fechaActual.getMinutes() + ':' + fechaActual.getSeconds()
+
+            document.querySelectorAll('#fecha-solicitud').forEach((elemento) => {
+                elemento.innerHTML = fechaFormateada;
+            })
+        }
+    </script> -->
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+</body>
+
+</html>

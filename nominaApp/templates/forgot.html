@@ -1,0 +1,60 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="utf-8">
+	<meta name="author" content="TriMark">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<meta name="description" content="Olvidé mi contraseña - TriMark">
+	<title>Recuperación de cuenta</title>
+	<link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+</head>
+
+<body>
+	<section class="h-100">
+		<div class="container h-100">
+			<div class="row justify-content-sm-center h-100">
+				<div class="col-xxl-4 col-xl-5 col-lg-5 col-md-7 col-sm-9">
+					<div class="text-center my-5">
+						<img class="rounded-5" src="{% static 'img/sign_out_logo.png' %}" alt="logo" width="150">
+					</div>
+					<div class="card shadow-lg rounded-4 overflow-hidden bg-dark">
+						<div class="card-body p-5">
+							<h1 class="fs-4 card-title fw-bold mb-4 text-center">Olvidé mi contraseña</h1>
+                            <p class="p">
+                                ¿Olvidaste la contraseña de tu cuenta? Ingrese su dirección de correo electrónico y le enviaremos una contraseña temporal.
+                            </p>
+							<form action="{% url 'forgot' %}" method="POST" class="needs-validation" novalidate="">
+								{% csrf_token %} 
+								<div class="mb-3">
+									<label class="mb-2 text-muted" for="email">Correo electrónico</label>
+									<input id="email" type="email" class="form-control" name="usuarioCorreo" required autofocus autocomplete="on" >
+									<div class="invalid-feedback">
+										Correo inválido
+									</div>
+								</div>
+
+								<div class="d-flex align-items-center">
+									<button type="submit" class="btn btn-primary ms-auto rounded-5">
+										Enviar correo electrónico
+									</button>
+								</div>
+							</form>
+						</div>
+						<div class="card-footer py-3 border-0">
+							<div class="text-center">
+								Recordaste tu contraseña? <a href="{% url 'index' %}" class="text-primary">Iniciar Sesión</a>
+							</div>
+						</div>
+					</div>
+					<div class="text-center mt-5 text-muted">
+						Copyright &copy; 2023 &mdash; TriMark
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<script src="{% static 'js/login/login.js' %}"></script>
+</body>
+</html>
