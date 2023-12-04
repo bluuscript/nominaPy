@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from datetime import datetime
 import math
-# Clases de carpeta models para iterar y asi crear objetos y poder manipularlos con sus respectivos metodos
+# Clases de models para iterar y asi crear objetos y poder manipularlos con sus respectivos metodos
 from nominaApp.model.rrhh import RRHH
 from nominaApp.model.personal import Personal
 from nominaApp.model.solicitud import Solicitud
@@ -144,12 +144,15 @@ def nuevo_registro_personal(request):
                 # Datos Cargas Familiares 
                 cargaRut=str(rut_carga), cargaNombre=str(nombre_carga), cargaGenero=str(genero_carga), cargaParentesco=str(parentesco_carga)
             )
-            # Insertar registro personal en la base de datos
-            nuevo_registro = registro_personal.save()
-            if  nuevo_registro.acknowledged and nuevo_registro.acknowledged == True:
-                return redirect(f"/rrhh/nomina/?nuevo_registro=ok&nombre_personal={nombre_personal}")
+            if registro_personal.exist() == True:
+                return redirect(f"/rrhh/nuevo-registro/?registro_ingresado=existe&rut_personal={rut_personal}")
             else:
-                return redirect(f"/rrhh/nomina/?nuevo_registro=fail&nombre_personal={nombre_personal}")
+                # Insertar registro personal en la base de datos
+                nuevo_registro = registro_personal.save()
+                if  nuevo_registro.acknowledged == True:
+                    return redirect(f"/rrhh/nomina/?nuevo_registro=ok&nombre_personal={nombre_personal}")
+                else:
+                    return redirect(f"/rrhh/nomina/?nuevo_registro=fail&nombre_personal={nombre_personal}")
     else:
         # Usuario no esta autenticado devolver a index login page
         return redirect("/")

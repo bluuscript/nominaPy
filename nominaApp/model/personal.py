@@ -1,5 +1,4 @@
 from .db import ConnectDB
-import bcrypt
 from datetime import datetime
 from pymongo import DESCENDING
 
@@ -66,12 +65,20 @@ class Personal:
             }
         # Connect to MongoDB Personal Collection
         self.personalCollection = ConnectDB().get_conn().get_collection('personal')
-        
+    
+    # Método para verificar existencia de personal o bien de su registro
+    def exist(self):
+        try:
+            result = self.personalCollection.find_one({"personalRut": self.personalRut})
+        except Exception as e:
+            print("exist personal, error: ", e)
+        return True if result is not None else False
+    
     def get_one(self, personal_rut = str):
         try:
             result = self.personalCollection.find_one({"personalRut": personal_rut})
         except Exception as e:
-            print("get registro personal: ",e)
+            print("get registro personal, error: ", e)
         return result if result is not None else None
     
     # Recuperar todos los registros del personal
@@ -97,7 +104,7 @@ class Personal:
             result = self.personalCollection.insert_one(self.personal)
         except Exception as e:
             print("insert registro personal: ",e)
-        return result
+        return result if result is not None else None
     
     def delete(self, personal_rut = str):
         try:
