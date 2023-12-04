@@ -14,7 +14,6 @@ pymongo = "^4.6.1"
 python-dotenv = "^1.0.0"
 py-bcrypt = "^0.4"
 pytz = "^2023.3.post1"
-whitenoise = {extras = ["brotli"], version = "^6.6.0"}
 
 
 [build-system]
