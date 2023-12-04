@@ -46,6 +46,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django_session_timeout.middleware.SessionTimeoutMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -127,6 +128,17 @@ USE_TZ = True
 STATIC_URL = '/static/'
     
 STATICFILES_DIRS = ( os.path.join(BASE_DIR, 'nominaApp/static'), )
+
+# Carpeta static copia para ser accesible al servidor (render),
+# esto ya que djano no maneja archivos estaticos estando en produccion (DEBUG=False)
+STATIC_ROOT = BASE_DIR / "staticfiles"
+
+# Guardar de manera comprimida, encriptada y unica los archivos estaticos.
+STORAGES = {
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
