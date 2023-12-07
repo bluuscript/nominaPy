@@ -69,7 +69,7 @@
                         <thead>
                             <tr class="fs-4">
                                 <th scope="col">Cargo</th>
-                                <th scope="col">Fecha Ingreso</th>
+                                <th scope="col">Fecha Ingreso <strong>dd/mm/yyyy</strong></th>
                                 <th scope="col">Sueldo</th>
                                 <th scope="col">Departamento</th>
                                 <th scope="col">Área</th>
@@ -78,7 +78,7 @@
                         <tbody class="fs-5">
                             <tr>
                                 <td>{{ mi_registro.cargo.cargoNombre }}</td>
-                                <td>{{ mi_registro.cargo.cargoFechaIngreso|date:"d-m-Y" }}</td>
+                                <td>{{ mi_registro.cargo.cargoFechaIngreso|date:"d/m/Y" }}</td>
                                 <td>{{ mi_registro.cargo.cargoSueldo }}</td>
                                 <td>{{ mi_registro.cargo.departamentoNombre }}</td>
                                 <td>{{ mi_registro.cargo.areaNombre }}</td>

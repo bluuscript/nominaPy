@@ -11,9 +11,11 @@ def inicio(request):
     # Solicitud del tipo GET
     if "user_uuid" in request.session:
         # Recuperar datos de la sesion del Usuario
+        rut_usuario = request.session["rut_usuario"]
         username = request.session["username"]
         tipo_personal = request.session["tipo_personal"]
         context = {
+            "rut_usuario": rut_usuario,
             "username": username,
             "tipo_personal": tipo_personal
         }
@@ -79,11 +81,11 @@ def eliminar_registro_personal(request):
                 eliminar_registro = Personal().delete(personal_rut=str(rut_personal))
                 # Se valida eliminar_registro para revisar si se elimino registro o no
                 if eliminar_registro.acknowledged == True:
-                    return redirect(f"/rrhh/nomina/?registro_rut={rut_personal}&eliminar=success")
+                    return redirect(f"/rrhh/nomina/?registro_rut={rut_personal}&eliminar_registro=ok")
                 else:
-                    return redirect(f"/rrhh/nomina/?registro_rut={rut_personal}&eliminar=error")
+                    return redirect(f"/rrhh/nomina/?registro_rut={rut_personal}&eliminar_registro=falló")
             else:
-                return redirect(f"/rrhh/nomina/?registro_rut={rut_personal}&eliminar=registro_no_encontrado")
+                return redirect(f"/rrhh/nomina/?registro_rut={rut_personal}&eliminar_registro=no%encontrado")
     else:
         # Usuario no esta autenticado devovler a index login page
         return redirect("/")
@@ -92,67 +94,73 @@ def nuevo_registro_personal(request):
     # Solicitudes del tipo GET y POST
     if "user_uuid" in request.session:
         # Recuperar datos de la sesion Usuario
+        rut_usuario = request.session["rut_usuario"]
         username = request.session["username"]
         tipo_personal = request.session["tipo_personal"]
         if request.method == "GET":
             context = {
+                "rut_usuario": rut_usuario,
                 "username": username,
                 "tipo_personal": tipo_personal
             }
             return render(request, "rrhh/nuevo-registro-personal.html", context)
+        # Metodo POST | Logica para insertar el registro en la base de datos
         else:
-            # Metodo POST | Logica para insertar el registro en la base de datos
-            # Datos Personal
+            # Verificar que Usuario de RRHH no Ingrese su propio Registro
             rut_personal = request.POST["rutPersonal"]
-            nombre_personal = request.POST["nombrePersonal"]
-            genero_personal = request.POST["generoPersonal"]
-            direccion_personal = request.POST["direccionPersonal"]
-            # Agregar posibilidad de más telefonos 
-            telefonos_personal = []
-            telefono_personal = request.POST["telefonoPersonal"]
-            telefonos_personal.append(int(telefono_personal)) if telefono_personal else None
-            # Datos Cargo
-            cargo_personal = request.POST["cargoPersonal"]
-            cargo_sueldo = request.POST["cargoSueldo"]
-            
-            fecha_ingreso = request.POST["fechaIngresoPersonal"]
-            año, mes, dia = map(int, fecha_ingreso.split("-"))
-            
-            area_personal = request.POST["areaPersonal"]
-            departamento_personal = request.POST["departamentoPersonal"] 
-            # Datos Contactos de Emergencia ( SOLO 1 DE MOMENTO)
-            rut_contacto = request.POST["rutContacto"]
-            nombre_contacto = request.POST["nombreContacto"]
-            relacion_contacto_personal = request.POST["relacionContactoPersonal"]
-            # Agregar posibilidad de más telefonos de Contacto
-            telefonos_contacto = []
-            telefono_contacto = request.POST["telefonoContacto"]
-            telefonos_contacto.append(int(telefono_contacto)) if telefono_contacto else None
-            # Datos Cargas Familiares ( SOLO 1 DE MOMENTO )
-            rut_carga = request.POST["rutCarga"]
-            nombre_carga = request.POST["nombreCarga"]
-            parentesco_carga =  request.POST["parentescoCarga"]
-            genero_carga = request.POST["generoCarga"]
-            # Iterar un nuevo objeto Personal para insertar registro en la base de datos
-            registro_personal = Personal(
-                # Datos Personales
-                personalRut=str(rut_personal), personalNombre=str(nombre_personal), personalGenero=str(genero_personal), personalDireccion=str(direccion_personal), telefonosPersonal=list(telefonos_personal),
-                # Datos Laborales
-                cargoNombre=str(cargo_personal), cargoSueldo = float(cargo_sueldo), cargoFechaIngreso=datetime(year=año, month=mes, day=dia), departamentoNombre=str(departamento_personal), areaNombre=str(area_personal),
-                # Datos Contactos de Emergencia
-                contactoRut=str(rut_contacto), contactoNombre=str(nombre_contacto), contactoRelacionPersonal=str(relacion_contacto_personal), telefonosContacto=list(telefonos_contacto),
-                # Datos Cargas Familiares 
-                cargaRut=str(rut_carga), cargaNombre=str(nombre_carga), cargaGenero=str(genero_carga), cargaParentesco=str(parentesco_carga)
-            )
-            if registro_personal.exist() == True:
-                return redirect(f"/rrhh/nuevo-registro/?registro_ingresado=existe&rut_personal={rut_personal}")
+            if rut_usuario == rut_personal:
+                return redirect(f"/rrhh/nuevo-registro/?nuevo_registro=no%puedes%ingresar%tu%propio%registro")
+            # Verificar que el reistro no exista e insertarlo si no existe
+            if Personal(personalRut=rut_personal).exist() == True:
+                return redirect(f"/rrhh/nuevo-registro/?nuevo_registro=existe&rut_personal={rut_personal}")
             else:
+                # Datos Personal
+                nombre_personal = request.POST["nombrePersonal"]
+                genero_personal = request.POST["generoPersonal"]
+                direccion_personal = request.POST["direccionPersonal"]
+                # Agregar posibilidad de más telefonos 
+                telefonos_personal = []
+                telefono_personal = request.POST["telefonoPersonal"]
+                telefonos_personal.append(int(telefono_personal)) if telefono_personal else None
+                # Datos Cargo
+                cargo_personal = request.POST["cargoPersonal"]
+                cargo_sueldo = request.POST["cargoSueldo"]
+                
+                fecha_ingreso = request.POST["fechaIngresoPersonal"]
+                año, mes, dia = map(int, fecha_ingreso.split("-"))
+                
+                area_personal = request.POST["areaPersonal"]
+                departamento_personal = request.POST["departamentoPersonal"] 
+                # Datos Contactos de Emergencia ( SOLO 1 DE MOMENTO)
+                rut_contacto = request.POST["rutContacto"]
+                nombre_contacto = request.POST["nombreContacto"]
+                relacion_contacto_personal = request.POST["relacionContactoPersonal"]
+                # Agregar posibilidad de más telefonos de Contacto
+                telefonos_contacto = []
+                telefono_contacto = request.POST["telefonoContacto"]
+                telefonos_contacto.append(int(telefono_contacto)) if telefono_contacto else None
+                # Datos Cargas Familiares ( SOLO 1 DE MOMENTO )
+                rut_carga = request.POST["rutCarga"]
+                nombre_carga = request.POST["nombreCarga"]
+                parentesco_carga =  request.POST["parentescoCarga"]
+                genero_carga = request.POST["generoCarga"]
+                # Iterar un nuevo objeto Personal para insertar registro en la base de datos
+                registro_personal = Personal(
+                    # Datos Personales
+                    personalRut=str(rut_personal), personalNombre=str(nombre_personal), personalGenero=str(genero_personal), personalDireccion=str(direccion_personal), telefonosPersonal=list(telefonos_personal),
+                    # Datos Laborales
+                    cargoNombre=str(cargo_personal), cargoSueldo = float(cargo_sueldo), cargoFechaIngreso=datetime(year=año, month=mes, day=dia), departamentoNombre=str(departamento_personal), areaNombre=str(area_personal),
+                    # Datos Contactos de Emergencia
+                    contactoRut=str(rut_contacto), contactoNombre=str(nombre_contacto), contactoRelacionPersonal=str(relacion_contacto_personal), telefonosContacto=list(telefonos_contacto),
+                    # Datos Cargas Familiares 
+                    cargaRut=str(rut_carga), cargaNombre=str(nombre_carga), cargaGenero=str(genero_carga), cargaParentesco=str(parentesco_carga)
+                )
                 # Insertar registro personal en la base de datos
                 nuevo_registro = registro_personal.save()
                 if  nuevo_registro.acknowledged == True:
                     return redirect(f"/rrhh/nomina/?nuevo_registro=ok&nombre_personal={nombre_personal}")
                 else:
-                    return redirect(f"/rrhh/nomina/?nuevo_registro=fail&nombre_personal={nombre_personal}")
+                    return redirect(f"/rrhh/nomina/?nuevo_registro=falló&nombre_personal={nombre_personal}")
     else:
         # Usuario no esta autenticado devolver a index login page
         return redirect("/")
@@ -267,9 +275,9 @@ def  modificar_registro_personal(request):
             # Modificar el registro en la base de datos
             modificar_registro = nuevo_registro.update()
             if modificar_registro.acknowledged == True:
-                return redirect(f"/rrhh/nomina/?registro_modificado=success&rut_personal={rut_personal}")
+                return redirect(f"/rrhh/nomina/?registro_modificado=ok&rut_personal={rut_personal}")
             else:
-                return redirect(f"/rrhh/nomina/?registro_modificado=fail")
+                return redirect(f"/rrhh/nomina/?registro_modificado=falló&rut_personal={rut_personal}")
         else:
             # Metodo GET
             return redirect("/rrhh/nomina/")

@@ -56,14 +56,14 @@ def  modificar_registro(request):
             # Obtener el registro del ususario en base al rut desde base de datos
             mi_registro = Personal().get_one(personal_rut=rut_usuario)
             context = {
+                "rut_usuario": rut_usuario,
                 "username": username,
                 "tipo_personal": tipo_personal,
                 "mi_registro": mi_registro if mi_registro is not None else None,
             }
             return render(request, "personal/modificar-registro.html", context)
         else:
-            # Metodo POST
-            # Logica para modificar el registro en la base de datos
+            # Metodo POST | Logica para modificar el registro en la base de datos
             # Datos Personal
             rut_personal = request.POST["rutPersonal"]
             nombre_personal = request.POST["nombrePersonal"]

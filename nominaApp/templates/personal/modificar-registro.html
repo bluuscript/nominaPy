@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi Registro - Modificar</title>
+    <title>Modificar Mi Registro</title>
     <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
     <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
@@ -30,21 +30,21 @@
                         <div class="col-md">
                             <h3>Datos Personales</h3>
                             <div class="form-group mb-3 text-start">
-                                <label class="form-label" for="nombreCompleto">Nombre Completo</label>
+                                <label class="form-label fw-bold" for="nombreCompleto">Nombre Completo</label>
                                 <input class="form-control" type="text" name="nombrePersonal"
                                     id="nombreCompleto" placeholder="Ej: Juan José Vargas Perez"
                                     value='{{ mi_registro.personalNombre }}'>
                             </div>
                             <div class="form-group mb-3 text-start">
-                                <label class="form-label" for="rut">RUT</label>
+                                <label class="form-label fw-bold" for="rut">RUT</label>
                                 <input class="form-control disabled opacity-75" type="text" name="rutPersonal" id="rut"
                                     placeholder="Ej: 12345678-k" value='{{ mi_registro.personalRut }}' readonly>
                             </div>
                             <div class="form-group mb-3 text-start">
-                                <label class="form-label" for="genero">Género</label>
+                                <label class="form-label fw-bold" for="genero">Género</label>
                                 <select class="form-select" name="generoPersonal" id="genero">
-                                    <option value='{{ mi_registro.personalGenero }}' selected>
-                                        {{ mi_registro.personalGenero }}
+                                    <option class="text-primary" value='{{ mi_registro.personalGenero }}' selected>
+                                        Actual: {{ mi_registro.personalGenero }}
                                     </option>
                                     <option value="Femenino">Femenino</option>
                                     <option value="Masculino">Masculino</option>
@@ -52,13 +52,13 @@
                                 </select>
                             </div>
                             <div class="form-group mb-3 text-start">
-                                <label class="form-label" for="direccion">Dirección</label>
+                                <label class="form-label fw-bold" for="direccion">Dirección</label>
                                 <input class="form-control" type="text" name="direccionPersonal" id="direccion"
                                     placeholder="Ej: Antonio Varas 1200" value='{{ mi_registro.personalDireccion }}'>
                             </div>
                             <div class="dropdown">
                                 <button class="btn btn-secondary dropdown-toggle fs-5 rounded-5" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                  Números de Celular
+                                  Números de Teléfono
                                 </button>
                                 <ul class="dropdown-menu">  
                                     {% for  telefono in mi_registro.telefonosPersonal %}
@@ -75,26 +75,26 @@
                         <div class="col-md">
                             <h3>Datos Laborales</h3>
                             <div class="form-group mb-3 text-start">
-                                <label class="form-label" for="cargo">Cargo</label>
+                                <label class="form-label fw-bold" for="cargo">Cargo</label>
                                 <input class="form-control disabled opacity-75" type="text" name="cargoPersonal" id="cargo"
                                     placeholder="Ej: Operador" value="{{ mi_registro.cargo.cargoNombre }}" readonly>
                             </div>
                             <div class="form-group mb-3 text-start">
-                                <label class="form-label" for="cargoSueldo">Sueldo</label>
+                                <label class="form-label fw-bold" for="cargoSueldo">Sueldo</label>
                                 <input class="form-control disabled opacity-75" type="number" step="0.01" min="0" name="cargoSueldo" id="cargoSueldo" value="{{ mi_registro.cargo.cargoSueldo }}" placeholder="Ej: 550602.27" readonly>
                             </div>
                             <div class="form-group mb-3 text-start">
-                                <label class="form-label" for="fechaIngreso">Fecha Ingreso</label>
+                                <label class="form-label fw-bold" for="fechaIngreso">Fecha Ingreso <strong class="text-primary">mm/dd/yyyy</strong></label>
                                 <input class="form-control disabled opacity-75" type="date" name="fechaIngresoPersonal" id="fechaIngreso"
                                     value="{{ mi_registro.cargo.cargoFechaIngreso|date:'Y-m-d' }}" readonly>
                             </div>
                             <div class="form-group mb-3 text-start">
-                                <label class="form-label" for="areaTrabajo">Área de Trabajo</label>
+                                <label class="form-label fw-bold" for="areaTrabajo">Área</label>
                                 <input class="form-control disabled opacity-75" type="text" name="areaPersonal" id="areaTrabajo"
                                     placeholder="Ej: Logística" value="{{ mi_registro.cargo.areaNombre }}" readonly>
                             </div>
                             <div class="form-group mb-3 text-start">
-                                <label class="form-label" for="departamento">Departamento</label>
+                                <label class="form-label fw-bold" for="departamento">Departamento</label>
                                 <input class="form-control disabled opacity-75" type="text" name="departamentoPersonal" id="departamento"
                                     placeholder="Ej: Reparto en Área" value="{{ mi_registro.cargo.departamentoNombre }}"
                                     readonly>
@@ -104,23 +104,23 @@
                             <h3>Contactos de Emergencia</h3>
                         {% for contacto in mi_registro.contactosEmergencia %}
                             <div class="form-group mb-3 text-start">
-                                <label class="form-label" for="rutContacto">RUT</label>
+                                <label class="form-label fw-bold" for="rutContacto">RUT</label>
                                 <input class="form-control" type="text" name="rutContacto" id="rutContacto"
                                     placeholder="Ej: 12345678-1" value="{{ contacto.contactoRut }}">
                             </div>
                             <div class="form-group mb-3 text-start">
-                                <label class="form-label" for="nombreContacto">Nombre Contacto</label>
+                                <label class="form-label fw-bold" for="nombreContacto">Nombre Completo</label>
                                 <input class="form-control" type="text" name="nombreContacto" id="nombreContacto"
                                     placeholder="Ej: Fernanda Oyarzo" value="{{ contacto.contactoNombre }}">
                             </div>
                             <div class="form-group mb-3 text-start">
-                                <label class="form-label" for="relacionContacto">Relación con Trabajador</label>
+                                <label class="form-label fw-bold" for="relacionContacto">Relación con Personal</label>
                                 <input class="form-control" type="text" name="relacionContactoPersonal"
                                     id="relacionContacto" placeholder="Ej: Esposa" value="{{ contacto.contactoRelacionPersonal }}">
                             </div>
                             <div class="dropdown">
                                 <button class="btn btn-secondary dropdown-toggle fs-5 rounded-5" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                  Números de Celular
+                                  Números de Télefono
                                 </button>
                                 <ul class="dropdown-menu">
                                 {% for telefono in contacto.telefonosContacto  %}
@@ -139,25 +139,25 @@
                             <h3>Cargas Familiares</h3>
                         {% for carga in mi_registro.cargaFamiliar %}
                             <div class="form-group mb-3 text-start">
-                                <label class="form-label" for="rutCarga">RUT</label>
+                                <label class="form-label fw-bold" for="rutCarga">RUT</label>
                                 <input class="form-control" type="text" name="rutCarga" id="rutCarga"
                                     placeholder="Ej: 19453487-2" value="{{ carga.cargaRut }}">
                             </div>
                             <div class="form-group mb-3 text-start">
-                                <label class="form-label" for="nombreCarga">Nombre Carga</label>
+                                <label class="form-label fw-bold" for="nombreCarga">Nombre Completo</label>
                                 <input class="form-control" type="text" name="nombreCarga" id="nombreCarga"
                                     placeholder="Ej: Andrea Vargas" value="{{ carga.cargaNombre }}">
                             </div>
                             <div class="form-group mb-3 text-start">
-                                <label class="form-label" for="parentesco">Parentesco</label>
+                                <label class="form-label fw-bold" for="parentesco">Parentesco</label>
                                 <input class="form-control" type="text" name="parentescoCarga" id="parentesco"
                                     placeholder="Ej: Hija" value="{{ carga.cargaParentesco }}">
                             </div>
                             <div class="form-group mb-3 text-start">
-                                <label class="form-label" for="generoCarga">Género</label>
+                                <label class="form-label fw-bold" for="generoCarga">Género</label>
                                 <select class="form-select" name="generoCarga" id="generoCarga">
-                                    <option value="{{ carga.cargaGenero }}" selected>
-                                        {{ carga.cargaGenero }}
+                                    <option class="text-primary" value="{{ carga.cargaGenero }}" selected>
+                                        Actual: {{ carga.cargaGenero }}
                                     </option>
                                     <option value="Femenino">Femenino</option>
                                     <option value="Masculino">Masculino</option>

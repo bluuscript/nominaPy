@@ -25,52 +25,51 @@
                     <h1 class="h1 text-center">Enviar Solicitud</h1>
                     <hr>
                     <div class="row justify-content-center my-5">
-                        <div class="card col-md-6 rounded-5 overflow-hidden">
-                            <div class="card-header">
-                                <h2 class="h2 text-center">Nueva Solicitud</h2>
+                        <form class="card col-md-6 rounded-5 overflow-hidden px-0" action="{% url 'enviar-solicitud' %}" method="post">
+                            {% csrf_token %}
+                            <div class="card-header py-3 bg-dark">
+                                <h2 class="h2 text-center fw-bold">Nueva Solicitud</h2>
                             </div>
                             <div class="card-body">
-                                <form action="{% url 'enviar-solicitud' %}" method="post">
-                                    {% csrf_token %}
-                                    <label for="asunto" class="form-label fs-5 mb-2">Asunto</label>
-                                    <select class="form-select mb-5" id="asunto" name="asunto"
-                                        aria-label="Asunto Solicitud" required>
-                                        <option value="" selected>Seleccionar</option>
-                                        <option value="Vacaciones">Vacaciones</option>
-                                        <option value="Documento">Documento</option>
-                                    </select>
-                                    <label for="descripcion" class="form-label fs-5 mb-2 mt-3">Descripción</label>
-                                    <div class="input-group mb-3">
-                                        <textarea class="form-control rounded-4" name="descripcion" aria-label="Descripción Asunto" rows="6" placeholder="Ej: Necesito pedir mis 2 semanas de vacaciones..." required></textarea>
-                                    </div>
-                                    <div class="card-footer d-grid gap-2 text-center">
-                                        <button type="submit" class="btn btn-primary btn-lg mt-2 rounded-5">Enviar</button>
-                                    </div>
-                                </form>
+                                <label for="asunto" class="form-label fw-bold fs-5 mb-2">Asunto</label>
+                                <select class="form-select mb-5" id="asunto" name="asunto"
+                                    aria-label="Asunto Solicitud" required>
+                                    <option value="" selected>Seleccionar</option>
+                                    <option value="Vacaciones">Vacaciones</option>
+                                    <option value="Documento">Documento</option>
+                                </select>
+                                <label for="descripcion" class="form-label fw-bold fs-5 mb-2 mt-3">Descripción</label>
+                                <div class="input-group mb-3">
+                                    <textarea class="form-control rounded-4" name="descripcion" aria-label="Descripción Asunto" rows="6" placeholder="Ej: Necesito pedir mis 2 semanas de vacaciones..." required></textarea>
+                                </div>
                             </div>
-                        </div>
+                            <div class="card-footer d-grid bg-dark">
+                                <button type="submit" class="btn btn-primary btn-lg rounded-5">Enviar</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
-        <script>
-            // Obtener una referencia al elemento de entrada de color y al párrafo
-            const colorInput = document.getElementById('color-input');
-            const texto = document.getElementsByClassName('container-fluid');
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <script>
+        // Obtener una referencia al elemento de entrada de color y al párrafo
+        const colorInput = document.getElementById('color-input');
+        const texto = document.getElementsByClassName('container-fluid');
 
-            // Agregar un evento input al elemento de entrada de color
-            colorInput.addEventListener('input', () => {
-                // Obtener el valor de color seleccionado
-                const colorSeleccionado = colorInput.value;
+        // Agregar un evento input al elemento de entrada de color
+        colorInput.addEventListener('input', () => {
+            // Obtener el valor de color seleccionado
+            const colorSeleccionado = colorInput.value;
 
-                // Iterar a través de todos los elementos con la clase "table" y establecer el color en cada uno de ellos
-                for (let i = 0; i < texto.length; i++) {
-                    texto[i].style.color = colorSeleccionado;
-                }
-            });
-        </script>
+            // Iterar a través de todos los elementos con la clase "table" y establecer el color en cada uno de ellos
+            for (let i = 0; i < texto.length; i++) {
+                texto[i].style.color = colorSeleccionado;
+            }
+        });
+    </script>
 </body>
 
 </html>

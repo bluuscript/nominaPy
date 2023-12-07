@@ -10,9 +10,10 @@ def index(request):
 # Interfaces del Usuario
 def login(request):
     if request.method == "POST":
+        # Recuperar correo y contraseña ingresada del formulario
         user_email = request.POST["email"]
         user_password = request.POST["password"]
-        
+        # Nuevo Usuario de la clase Usuario
         user = Usuario(email=user_email, password=user_password)
         # user login managment
         if user.exist() == True:
