@@ -27,7 +27,7 @@
                     <div class="row justify-content-center my-5">
                         <form class="card col-md-6 rounded-5 overflow-hidden px-0" action="{% url 'enviar-solicitud' %}" method="post">
                             {% csrf_token %}
-                            <div class="card-header py-3 bg-dark">
+                            <div class="card-header py-3 bg-secondary">
                                 <h2 class="h2 text-center fw-bold">Nueva Solicitud</h2>
                             </div>
                             <div class="card-body">
@@ -43,8 +43,8 @@
                                     <textarea class="form-control rounded-4" name="descripcion" aria-label="Descripción Asunto" rows="6" placeholder="Ej: Necesito pedir mis 2 semanas de vacaciones..." required></textarea>
                                 </div>
                             </div>
-                            <div class="card-footer d-grid bg-dark">
-                                <button type="submit" class="btn btn-primary btn-lg rounded-5">Enviar</button>
+                            <div class="card-footer d-grid bg-secondary">
+                                <button type="submit" class="btn btn-primary btn-lg rounded-5 fs-3">Enviar</button>
                             </div>
                         </form>
                     </div>

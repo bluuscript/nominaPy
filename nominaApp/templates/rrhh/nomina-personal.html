@@ -9,6 +9,17 @@
     <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
     <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+    <style>
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { 
+        -webkit-appearance: none; 
+        margin: 0; 
+        }
+
+        input[type=number] { -moz-appearance:textfield; }
+    </style>
+
 </head>
 
 <body>
@@ -41,7 +52,7 @@
                                     <th scope="col">CARGO</th>
                                     <th scope="col">DEPARTAMENTO</th>
                                     <th scope="col">ÁREA</th>
-                                    <th scope="col">FECHA INGRESO dd/mm/yyyy</th>
+                                    <th scope="col">FECHA INGRESO <strong class="text-primary">dd/mm/yyyy</strong></th>
                                     <th scope="col">ACCIONES</th>
                                 </tr>
                             </thead>
@@ -84,6 +95,7 @@
                                                                     <form class="row row-cols-md-4 mt-5 justify-content-center" action="{% url 'nomina-modificar-registro' %}"
                                                                         method="post">
                                                                         {% csrf_token %}
+                                                                        <!-- Datos Personales -->
                                                                         <div class="col-md">
                                                                             <h3>Datos Personales</h3>
                                                                             <div class="form-group mb-3 text-start">
@@ -94,7 +106,9 @@
                                                                             </div>
                                                                             <div class="form-group mb-3 text-start">
                                                                                 <label class="form-label fw-bold" for="rut">RUT</label>
-                                                                                <input class="form-control" type="text" name="rutPersonal" id="rut"
+                                                                                <!-- rut registro personal -->
+                                                                                <input type="hidden" name="rutPersonal" value="{{ registro.personalRut }}">
+                                                                                <input class="form-control" type="text" name="nuevoRutPersonal" id="rut"
                                                                                     placeholder="Ej: 12345678-k" value='{{ registro.personalRut }}'>
                                                                             </div>
                                                                             <div class="form-group mb-3 text-start">
@@ -118,17 +132,27 @@
                                                                                 Teléfonos Personal
                                                                                 </button>
                                                                                 <ul class="dropdown-menu dropdown-menu-dark">  
-                                                                                {% for  telefono in registro.telefonosPersonal %}
-                                                                                    <li class="dropdown-item my-1">
+                                                                                {% if contacto.telefonosContacto|length > 0 %}
+                                                                                    {% for telefono in contacto.telefonosContacto  %}
+                                                                                        <li class="dropdown-item bg-primary">
+                                                                                            <div class="input-group">
+                                                                                                <span class="input-group-text" id="telefonoPersonal">+569</span>
+                                                                                                <input type="number" class="form-control" id="telefonoPersonal" name="telefonoPersonal" value="{{ telefono }}" placeholder="Ej: 1234 5678" aria-label="Número Celular">
+                                                                                            </div>
+                                                                                        </li>
+                                                                                    {% endfor %}
+                                                                                {% else %}
+                                                                                    <li class="dropdown-item bg-primary">
                                                                                         <div class="input-group">
                                                                                             <span class="input-group-text" id="telefonoPersonal">+569</span>
-                                                                                            <input type="number" class="form-control" id="telefonoPersonal" name="telefonoPersonal" value="{{ telefono }}" placeholder="1234 5678" aria-label="Número Telefono">
+                                                                                            <input type="number" class="form-control" id="telefonoPersonal" name="telefonoPersonal" placeholder="Ej: 1234 5678" aria-label="Número Celular">
                                                                                         </div>
                                                                                     </li>
-                                                                                {% endfor %}
+                                                                                {% endif %}
                                                                                 </ul>
                                                                             </div> 
                                                                         </div>
+                                                                        <!-- Datos Laborales -->
                                                                         <div class="col-md">
                                                                             <h3>Datos Laborales</h3>
                                                                             <div class="form-group mb-3 text-start">
@@ -156,6 +180,7 @@
                                                                                     placeholder="Ej: Reparto en Área" value="{{ registro.cargo.departamentoNombre }}">
                                                                             </div>
                                                                         </div>
+                                                                        <!-- Datos Contactos de Emergencia -->
                                                                         <div class="col-md">
                                                                             <h3>Contactos de Emergencia</h3>
                                                                         {% for contacto in registro.contactosEmergencia %}
@@ -179,18 +204,28 @@
                                                                                 Teléfonos Contacto
                                                                                 </button>
                                                                                 <ul class="dropdown-menu dropdown-menu-dark">
-                                                                                {% for telefono in contacto.telefonosContacto  %}
-                                                                                <li class="dropdown-item my-1">
-                                                                                    <div class="input-group">
-                                                                                        <span class="input-group-text" id="telefonoContacto">+569</span>
-                                                                                        <input type="number" class="form-control" id="telefonoContacto" name="telefonoContacto" value="{{ telefono }}" placeholder="1234 5678" aria-label="Número Celular">
-                                                                                    </div>
-                                                                                </li>
-                                                                                {% endfor %}
+                                                                                {% if contacto.telefonosContacto|length > 0 %}
+                                                                                    {% for telefono in contacto.telefonosContacto  %}
+                                                                                    <li class="dropdown-item bg-primary">
+                                                                                        <div class="input-group">
+                                                                                            <span class="input-group-text" id="telefonoContacto">+569</span>
+                                                                                            <input type="number" class="form-control" id="telefonoContacto" name="telefonoContacto" value="{{ telefono }}" placeholder="Ej: 1234 5678" aria-label="Número Celular">
+                                                                                        </div>
+                                                                                    </li>
+                                                                                    {% endfor %}
+                                                                                {% else %}
+                                                                                    <li class="dropdown-item bg-primary">
+                                                                                        <div class="input-group">
+                                                                                            <span class="input-group-text" id="telefonoContacto">+569</span>
+                                                                                            <input type="number" class="form-control" id="telefonoContacto" name="telefonoContacto" placeholder="Ej: 1234 5678" aria-label="Número Celular">
+                                                                                        </div>
+                                                                                    </li>
+                                                                                {% endif %}
                                                                                 </ul>
                                                                             </div>
                                                                         {% endfor %}
                                                                         </div>
+                                                                        <!-- Datos Cargas Familiares -->
                                                                         <div class="col-md">
                                                                             <h3>Cargas Familiares</h3>
                                                                         {% for carga in registro.cargaFamiliar %}

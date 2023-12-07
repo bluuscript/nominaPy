@@ -107,7 +107,7 @@ def  modificar_registro(request):
                 cargaRut=str(rut_carga), cargaNombre=str(nombre_carga), cargaGenero=str(genero_carga), cargaParentesco=str(parentesco_carga)
             )
             # Modificar el registro en la base de datos
-            modificar_registro = nuevo_registro.update()
+            modificar_registro = nuevo_registro.update(personal_rut = rut_personal)
             if modificar_registro.acknowledged == True:
                 if tipo_personal == "PE":
                     return redirect(f"/personal/mi-registro/?actualizar=success")

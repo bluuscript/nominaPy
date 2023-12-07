@@ -9,6 +9,17 @@
     <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
     <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+    <style>
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { 
+        -webkit-appearance: none; 
+        margin: 0; 
+        }
+
+        input[type=number] { -moz-appearance:textfield; }
+    </style>
+
 </head>
 
 <body>
@@ -60,15 +71,24 @@
                                 <button class="btn btn-secondary dropdown-toggle fs-5 rounded-5" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                   Números de Teléfono
                                 </button>
-                                <ul class="dropdown-menu">  
+                                <ul class="dropdown-menu">
+                                {% if  mi_registro.telefonosPersonal|length > 0 %}  
                                     {% for  telefono in mi_registro.telefonosPersonal %}
                                     <li class="dropdown-item bg-primary">
                                         <div class="input-group">
                                             <span class="input-group-text" id="telefonoPersonal">+569</span>
-                                            <input type="text" class="form-control" id="telefonoPersonal" name="telefonoPersonal" value="{{ telefono }}" placeholder="1234 5678" aria-label="Número Telefono" aria-describedby="telefonoPersonal">
+                                            <input type="number" class="form-control" id="telefonoPersonal" name="telefonoPersonal" value="{{ telefono }}" placeholder="Ej: 1234 5678" aria-label="Número Telefono" aria-describedby="telefonoPersonal">
                                         </div>
                                     </li>
                                     {% endfor %}
+                            {% else %}
+                                <li class="dropdown-item bg-primary">
+                                    <div class="input-group">
+                                        <span class="input-group-text" id="telefonoPersonal">+569</span>
+                                        <input type="number" class="form-control" id="telefonoPersonal" name="telefonoPersonal" placeholder="Ej: 1234 5678" aria-label="Número Telefono" aria-describedby="telefonoPersonal">
+                                    </div>
+                                </li>
+                            {% endif %}
                                 </ul>
                             </div>
                         </div>
@@ -123,14 +143,23 @@
                                   Números de Télefono
                                 </button>
                                 <ul class="dropdown-menu">
-                                {% for telefono in contacto.telefonosContacto  %}
-                                  <li class="dropdown-item bg-primary">
-                                    <div class="input-group">
-                                        <span class="input-group-text" id="telefonoContacto">+569</span>
-                                        <input type="text" class="form-control" id="telefonoContacto" name="telefonoContacto" value="{{ telefono }}" placeholder="1234 5678" aria-label="Número Celular">
-                                    </div>
-                                  </li>
-                                {% endfor %}
+                                    {% if contacto.telefonosContacto|length > 0 %}
+                                        {% for telefono in contacto.telefonosContacto  %}
+                                        <li class="dropdown-item bg-primary">
+                                            <div class="input-group">
+                                                <span class="input-group-text" id="telefonoContacto">+569</span>
+                                                <input type="number" class="form-control" id="telefonoContacto" name="telefonoContacto" value="{{ telefono }}" placeholder="Ej: 1234 5678" aria-label="Número Celular">
+                                            </div>
+                                        </li>
+                                        {% endfor %}
+                                    {% else %}
+                                    <li class="dropdown-item bg-primary">
+                                        <div class="input-group">
+                                            <span class="input-group-text" id="telefonoContacto">+569</span>
+                                            <input type="number" class="form-control" id="telefonoContacto" name="telefonoContacto" placeholder="Ej: 1234 5678" aria-label="Número Celular">
+                                        </div>
+                                    </li>
+                                    {% endif %}
                                 </ul>
                             </div>
                         {% endfor %}

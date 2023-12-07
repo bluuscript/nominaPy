@@ -91,9 +91,9 @@ class Personal:
             print("get registro personal: ",e)
         return result if result is not None else None
     
-    def update(self):
+    def update(self, personal_rut = str):
         try:
-            result = self.personalCollection.update_one({"personalRut": self.personalRut}, {"$set": self.personal})
+            result = self.personalCollection.update_one({"personalRut": personal_rut}, {"$set": self.personal})
         except Exception as e:
             print("update registro personal: ",e)
         # Revisar que devuelve result

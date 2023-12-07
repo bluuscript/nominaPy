@@ -224,14 +224,15 @@ def solicitudes_personal(request):
         return redirect("/")
     
 def  modificar_registro_personal(request):
-    # Solicitudes del tipo GET y POST
+    # Solicitudes del tipo POST, al ser GET son redireccionadas a Nomina
     if "user_uuid" in request.session:
         # Recuperar todos los datos del registro, incluso los que se modificaron
         if request.method == "POST":
-            # Metodo POST
-            # Logica para modificar el registro en la base de datos
-            # Datos Personal
+            # Metodo POST | Logica para modificar el registro en la base de datos
+            # Obtener rut original del registro personal
             rut_personal = request.POST["rutPersonal"]
+            # Datos Personal
+            nuevo_rut_personal = request.POST["nuevoRutPersonal"]
             nombre_personal = request.POST["nombrePersonal"]
             genero_personal = request.POST["generoPersonal"]
             direccion_personal = request.POST["direccionPersonal"]
@@ -264,7 +265,7 @@ def  modificar_registro_personal(request):
             # Iterar un nuevo objeto Personal para insertar registro en la base de datos
             nuevo_registro = Personal(
                 # Datos Personales
-                personalRut=str(rut_personal), personalNombre=str(nombre_personal), personalGenero=str(genero_personal), personalDireccion=str(direccion_personal), telefonosPersonal=list(telefonos_personal),
+                personalRut=str(nuevo_rut_personal), personalNombre=str(nombre_personal), personalGenero=str(genero_personal), personalDireccion=str(direccion_personal), telefonosPersonal=list(telefonos_personal),
                 # Datos Laborales
                 cargoNombre=str(cargo_personal), cargoSueldo = float(cargo_sueldo), cargoFechaIngreso=datetime(year=año, month=mes, day=dia), departamentoNombre=str(departamento_personal), areaNombre=str(area_personal),
                 # Datos Contactos de Emergencia
@@ -273,7 +274,7 @@ def  modificar_registro_personal(request):
                 cargaRut=str(rut_carga), cargaNombre=str(nombre_carga), cargaGenero=str(genero_carga), cargaParentesco=str(parentesco_carga)
             )
             # Modificar el registro en la base de datos
-            modificar_registro = nuevo_registro.update()
+            modificar_registro = nuevo_registro.update(personal_rut = rut_personal)
             if modificar_registro.acknowledged == True:
                 return redirect(f"/rrhh/nomina/?registro_modificado=ok&rut_personal={rut_personal}")
             else:
