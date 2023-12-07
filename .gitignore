@@ -1,2 +1,5 @@
+# Carpeta Entorno virtual de python
 env
+
+# Archivo con variables de entorno
 .env

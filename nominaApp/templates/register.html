@@ -25,31 +25,31 @@
 							<form action="{% url 'register' %}" method="POST" class="needs-validation" novalidate="">
 								{% csrf_token %} 
                                 <div class="mb-3">
-									<label class="mb-2 text-muted" for="rut">RUT</label>
-									<input id="rut" type="text" class="form-control" name="rut" pattern="[0-9]{8}-[0-9kK]{1}" maxlength="10" required autofocus autocomplete="off" placeholder="Ej: 12344566-3">
+									<label class="mb-2 fw-bold" for="rut">RUT<strong class="text-danger">*</strong></label>
+									<input id="rut" type="text" class="form-control" name="rut"  placeholder="Ej: 12344566-3" pattern="[0-9]{8}-[0-9kK]{1}" maxlength="10" required autofocus autocomplete="off">
 									<div class="invalid-feedback">
 										RUT requerido
 									</div>
 								</div>
 
 								<div class="mb-3">
-									<label class="mb-2 text-muted" for="username">Nombre Completo</label>
-									<input id="username" type="text" class="form-control" name="username" required autocomplete="off">
+									<label class="mb-2 fw-bold" for="username">Nombre Completo<strong class="text-danger">*</strong></label>
+									<input id="username" type="text" class="form-control" name="username" placeholder="Ej: Juan Vargas" required autocomplete="off">
 									<div class="invalid-feedback">
 										Nombre requerido
 									</div>
 								</div>
                                 
 								<div class="mb-3">
-									<label class="mb-2 text-muted" for="email">Dirección de correo eléctronico</label>
-									<input id="email" type="email" class="form-control" name="email" required  autocomplete="off" >
+									<label class="mb-2 fw-bold" for="email">Dirección de correo eléctronico<strong class="text-danger">*</strong></label>
+									<input id="email" type="email" class="form-control" name="email" placeholder="Ej: jvargas@gmail.com" required  autocomplete="off" >
 									<div class="invalid-feedback">
 										Correo inválido
 									</div>
 								</div>
 
                                 <div class="mb-3">
-                                    <label class="mb-2 text-muted" for="tipoPersonal">Tipo de Personal</label>
+                                    <label class="mb-2 fw-bold" for="tipoPersonal">Tipo de Personal<strong class="text-danger">*</strong></label>
                                     <select class="form-select" name="tipoPersonal" id="tipoPersonal" aria-label="Tipo de Personal" required  autocomplete="off" >
                                         <option value="" disabled selected hidden>Seleccionar</option>
                                         <option value="PE">Personal Empresa</option>
@@ -61,10 +61,13 @@
                                 </div>
 
 								<div class="mb-3">
-									<label class="mb-2 text-muted" for="password">Contraseña</label>
-									<input id="password" type="password" class="form-control" name="password" required  autocomplete="off" >
+									<label class="mb-2 fw-bold" for="password">Contraseña<strong class="text-danger">*</strong></label>
+									<input id="password" type="password" class="form-control" name="password" placeholder="Ej: nomina23" minlength="6" maxlength="8" required  autocomplete="off" >
 								    <div class="invalid-feedback">
-								    	Contraseña requerida
+								    	Contraseña invalida
+										<p class="text-muted fw-bold my-1">
+											Mínimo de 6 y máximo de 8 carácteres (  números y/o letras ) <strong class="text-danger">*</strong>
+										</p>
 							    	</div>
 								</div>
 
