@@ -21,14 +21,14 @@
                 {% include 'partials/sidebar_personal.html' %}
             {% endif %}
             <div class="col py-3 overflow-auto vh-100">
-                <h1 class="h1 text-center">Mis Solicitudes</h1>
+                <h1 class="h1 fw-bold text-center">Mis Solicitudes</h1>
                 <hr>
             {% if mis_solicitudes is not None %}
                 <div class="vh-100">
                     <div class="row rows-cols-3 g-3 mt-3">
                         {% for solicitud in mis_solicitudes %}
                         <div class="col-md-4">
-                            <div class="card rounded-4 overflow-hidden" style="height: 18rem;">
+                            <div class="card rounded-4" style="width: 22rem; height: 18rem;">
                                 <div class="card-body position-relative">
                                     <h6 class="card-title border border-dark-subtle rounded rounded-4 position-absolute start-0 top-0 p-1 ms-1 mt-1" style="width: max-content;">
                                         <strong># {{ num_solicitudes_pagina|add:forloop.counter }}</strong>
@@ -36,10 +36,11 @@
                                     <div class="card-header border border-primary rounded rounded-4 py-2 px-2 mt-4">
                                         <h6 class="card-title mb-1 mt-0"><strong>Nombre:</strong> {{ solicitud.nombre_solicitante }}</h6>
                                         <h6 class="card-title my-1"><strong>Asunto:</strong> {{ solicitud.asunto }}</h6>
-                                        <h6 class="card-title mt-1 mb-0"><strong>Fecha Emisión:</strong> {{ solicitud.fecha_emision|date:"d-m-Y" }}</h6>
+                                        <!-- <strong class="text-primary">dd/mm/yyyyy</strong> -->
+                                        <h6 class="card-title mt-1 mb-0"><strong>Fecha Emisión:</strong> {{ solicitud.fecha_emision|date:"d/m/Y" }}</h6>
                                     </div>
-                                    <h6 class="card-title my-1 overflow-auto"><strong>Descripción:</strong></h6>
-                                    <p class="card-text">
+                                    <h6 class="card-title my-1"><strong>Descripción:</strong></h6>
+                                    <p class="card-text overflow-auto">
                                         {{ solicitud.descripcion }}
                                     </p>
                                 </div>
