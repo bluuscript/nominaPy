@@ -3,7 +3,7 @@ env
 
 # Archivo con variables de entorno
 .env
-# Ignorar carpetas de pychache de la applicacion
+# __pycache__ de la app
 nominaApp/__pycache__
 nominaApp/model/__pycache__
 nominaApp/views/__pycache__
