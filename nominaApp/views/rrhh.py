@@ -5,6 +5,8 @@ import math
 from nominaApp.model.rrhh import RRHH
 from nominaApp.model.personal import Personal
 from nominaApp.model.solicitud import Solicitud
+from nominaApp.model.usuario import Usuario
+from nominaApp.model.correo import Correo
 
 # Interfaces del Personal de RRHH
 def inicio(request): 
@@ -214,11 +216,17 @@ def solicitudes_personal(request):
             if solicitud is not None:
                 actualizar_estado = Solicitud().update(solicitud_uuid=uuid_solicitud, estado_solicitud=nuevo_estado)
                 if actualizar_estado is not None:
-                    return redirect(f"/rrhh/solicitudes/?solicitud={uuid_solicitud}&actualizar=success&nuevoEstado={nuevo_estado}")
+                    # Datos para enviar el nuevo estado de la Solicitud por Correo al Usuario asociado
+                    solicitud_modificada = Solicitud().get_one(solicitud_uuid=uuid_solicitud)
+                    rut_solicitante = solicitud_modificada["rut_solicitante"]
+                    usuario_correo = Usuario().get_user_from_rut(rut_usuario=rut_solicitante)["email"]
+                    # Enviar Correo con Solicitud Nuevo Estado
+                    Correo(usuario_correo=usuario_correo).send_solicitud(solicitud=solicitud_modificada, estado_solicitud=nuevo_estado)
+                    return redirect(f"/rrhh/solicitudes/?solicitud_uuid={uuid_solicitud}&actualizar=exitoso&nuevo_estado={nuevo_estado}")
                 else:
-                    return redirect(f"/rrhh/solicitudes/?solicitud={uuid_solicitud}&actualizar=fail")
+                    return redirect(f"/rrhh/solicitudes/?solicitud={uuid_solicitud}&actualizar=fallo")
             else:
-                return redirect(f"/rrhh/solicitudes/?solicitud=noEncontrada")
+                return redirect(f"/rrhh/solicitudes/?solicitud=no_encontrada")
     else:
         # Usuario no esta autenticado devolver a index login page
         return redirect("/")

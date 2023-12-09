@@ -26,7 +26,7 @@ class Solicitud:
             "fecha_ultima_modificacion": self.fecha_ultima_modificacion
         }
         # Connect to MongoDB Solicitudes Collection
-        self.solicitudCollection = ConnectDB().get_conn().get_collection('solicitudes')
+        self.solicitudCollection = ConnectDB().get_conn().solicitudes
 
     def get_one(self, solicitud_uuid = str):
         try:

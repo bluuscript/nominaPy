@@ -17,7 +17,7 @@ class Usuario:
             "password": self.get_hashed_password() if self.password is not None else None
         }
         # Connect to MongoDB Usuarios Collection
-        self.userCollection = ConnectDB().get_conn().get_collection("usuarios")
+        self.userCollection = ConnectDB().get_conn().usuarios
     
     # Verificar que existencia de registro de Usuario   
     def exist(self):
@@ -32,6 +32,15 @@ class Usuario:
     def get(self):
         try:
             result = self.userCollection.find_one({"email": self.email})
+        except Exception as e:
+            print("Error al buscar usuario:  ", e)
+            result = e
+        return result if result is not None else None
+    
+    # Obtener un registro Usuario a partir del RUT => para enviar solicitud por correo
+    def get_user_from_rut(self, rut_usuario):
+        try:
+            result = self.userCollection.find_one({"rut": rut_usuario})
         except Exception as e:
             print("Error al buscar usuario:  ", e)
             result = e

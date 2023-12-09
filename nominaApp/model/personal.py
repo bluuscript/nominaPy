@@ -64,7 +64,7 @@ class Personal:
             }]
             }
         # Connect to MongoDB Personal Collection
-        self.personalCollection = ConnectDB().get_conn().get_collection('personal')
+        self.personalCollection = ConnectDB().get_conn().personal
     
     # Método para verificar existencia de personal o bien de su registro
     def exist(self):

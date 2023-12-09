@@ -28,6 +28,8 @@ class Correo:
         message.attach(MIMEText(f"""
                                 <h2>Contraseña temporal: <strong>{contraseña_temporal}</strong></h2>
                                 <h3>ℹ️ Luego de Iniciar sesión en la plataforma, no olvides cambiar tu contraseña.</h3>
+                                <hr>
+                                <img src='https://i.imgur.com/l3OJRTL.png' width='320px' alt='Logo TriMark Footer Correo'>
                                 """, "html"))
         
         message["From"] = self.sent_from
@@ -42,5 +44,33 @@ class Correo:
         except Exception as exception:
             return False
         
-# email = Correo(usuario_correo="tomymilla22@gmail.com").send()
-# print(email)
+    def send_solicitud(self, solicitud, estado_solicitud):
+        gmail_user = "super.trimark@gmail.com"
+        gmail_app_password ="lejl augh jffv rshb"
+        
+        subject = f"Solitud Asunto: {solicitud['asunto']} Ha Sido {estado_solicitud}"
+        
+        # Enviar Correo con Solicitud con su Estado Nuevo
+        message = MIMEMultipart()
+        message.attach(MIMEText(f"""
+                                <h2>{solicitud['nombre_solicitante']} tu Solitud con Asunto: {solicitud['asunto']} Ha Sido {estado_solicitud}</h2>
+                                
+                                <h2>Descripción: </h2>
+                                <p>
+                                    {solicitud['descripcion']}
+                                </p>
+                                <hr>
+                                <img src='https://i.imgur.com/l3OJRTL.png' width='320px' alt='Logo TriMark Footer Correo'>
+                                """, "html"))
+        
+        message["From"] = self.sent_from
+        message["To"] = self.sent_to
+        message["Subject"] = subject
+        try:
+            server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
+            server.ehlo()
+            server.login(gmail_user, gmail_app_password)
+            server.sendmail(self.sent_from, self.sent_to, message.as_bytes())
+            server.close()
+        except Exception as exception:
+            return False
