@@ -2,7 +2,7 @@
 name = "nomina-py"
 version = "0.1.0"
 description = "Plataforma Web para Administrar Nómina de empresa TriMark cadena de supermercados."
-authors = ["Tomás Fuentes Milla <tomas.fuentes07@inacapmail.cl>"]
+authors = ["Tomás Fuentes Milla <tomas.fuentes07@inacapmail.cl>", "Gabriel Vidal <gabriel.vidal12@inacapmail.cl>", "Héctor San Martin <hector.sanmartin06@inacapmail.cl>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
