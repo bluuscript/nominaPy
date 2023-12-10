@@ -26,7 +26,8 @@
         <div class="row flex-nowrap">
             {% include 'partials/sidebar_rrhh.html' %}
             <div class="col py-3 overflow-auto vh-100">
-                <h1 class="text-center mt-3">Nuevo Registro</h1>
+                <h1 class="text-center mt-3 fw-bold">Nuevo Registro</h1>
+                <hr>
                 <div class="container text-center">
                     <form class="row row-cols-md-4 my-5 justify-content-center" action="{% url 'nuevo-registro' %}" method="post">
                         {% csrf_token %} 

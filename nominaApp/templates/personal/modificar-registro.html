@@ -32,10 +32,11 @@
                 {% include 'partials/sidebar_personal.html' %}
             {% endif %}
             <div class="col py-3 overflow-auto vh-100">
-                <div class="container-fluid mt-4">
-                    <h1 class="h1 text-center">Modificar Mi Registro</h1>
+                <div class="container-fluid">
+                    <h1 class="h1 text-center fw-bold mt-2">Modificar Mi Registro</h1>
+                    <hr>
                 {% if mi_registro is not None %}
-                    <form class="row row-cols-md-4 mt-5 justify-content-center" action="{% url 'modificar-registro' %}"
+                    <form class="row row-cols-md-4 mt-4 justify-content-center" action="{% url 'modificar-registro' %}"
                         method="post">
                         {% csrf_token %}
                         <div class="col-md">

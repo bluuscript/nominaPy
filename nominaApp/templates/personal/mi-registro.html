@@ -21,12 +21,12 @@
                 {% include 'partials/sidebar_personal.html' %}
             {% endif %}
             <div class="col py-3 overflow-auto vh-100">
-                <h1 class="h1 text-center mt-2 mb-3">Mi Registro</h1>
+                <h1 class="h1 text-center mt-2 mb-3 fw-bold">Mi Registro</h1>
+                <hr>
             {% if mi_registro is not None %}
                 <div class="container-fluid">
-                    <hr>
                     <div class="row rows-cols-2">
-                        <h2 class="h2 text-center mt-5 mb-3">Datos Personales</h2>
+                        <h2 class="h2 text-center mt-3 mb-3">Datos Personales</h2>
                         <div class="col-md-8">
                             <table class="table rounded-4 text-center overflow-hidden">
                                 <thead class="text-center">
