@@ -51,11 +51,15 @@
                                     </select>
                                 </div>
                                 <div class="form-group mb-3 text-start">
-                                    <label class="form-label fw-bold" for="direccionPersonal">Dirección<strong class="text-danger">*</strong></label>
-                                    <input class="form-control" type="text" name="direccionPersonal" id="direccionPersonal" placeholder="Ej: Antonio Varas 1200" required>
+                                    <label class="form-label fw-bold" for="direccionTexto">Dirección<strong class="text-danger">*</strong></label>
+                                    <div class="input-group">
+                                        <input class="form-control w-50" type="text" name="direccionTexto" id="direccionTexto" placeholder="Ej: Antonio Varas" required>
+                                        <span class="input-group-addon mx-1">N°</span>
+                                        <input class="form-control" type="number" name="direccionNumero" id="direccionNumero" placeholder="Ej: 1029" required>
+                                    </div>
                                 </div>
                                 <div class="form-group mb-3 text-start">
-                                    <label class="form-label fw-bold" for="telefonoPersonal"> Número de Teléfono<strong class="text-danger">*</strong></label>
+                                    <label class="form-label fw-bold" for="telefonoPersonal">Número de Teléfono<strong class="text-danger">*</strong></label>
                                     <br>
                                     <span class="validarTelefono text-danger"></span>
                                     <div class="input-group">
@@ -72,7 +76,10 @@
                                 </div>
                                 <div class="form-group mb-3 text-start">
                                     <label class="form-label fw-bold" for="cargoSueldo">Sueldo<strong class="text-danger">*</strong></label>
-                                    <input class="form-control" type="number" step="0.01" min="0" name="cargoSueldo" id="cargoSueldo" placeholder="Ej: 550602.27" required>
+                                    <div class="input-group">
+                                        <span class="input-group-text" id="peso-addon1">$</span>
+                                        <input class="form-control" type="number" step="1" min="500000" name="cargoSueldo" id="cargoSueldo" placeholder="Ej: 540720" required>
+                                    </div>
                                 </div>
                                 <div class="form-group mb-3 text-start">
                                     <label class="form-label fw-bold" for="fechaIngresoPersonal">Fecha Ingreso<strong class="text-danger">*</strong>

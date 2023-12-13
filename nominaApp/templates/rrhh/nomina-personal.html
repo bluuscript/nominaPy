@@ -109,7 +109,7 @@
                                                                                 <!-- rut registro personal -->
                                                                                 <input type="hidden" name="rutPersonal" value="{{ registro.personalRut }}">
                                                                                 <input class="form-control" type="text" name="nuevoRutPersonal" id="rut"
-                                                                                    placeholder="Ej: 12345678-k" value='{{ registro.personalRut }}'>
+                                                                                    placeholder="Ej: 12345678-1" value='{{ registro.personalRut }}'>
                                                                             </div>
                                                                             <div class="form-group mb-3 text-start">
                                                                                 <label class="form-label fw-bold" for="genero">Género</label>
@@ -125,7 +125,7 @@
                                                                             <div class="form-group mb-3 text-start">
                                                                                 <label class="form-label fw-bold" for="direccion">Dirección</label>
                                                                                 <input class="form-control" type="text" name="direccionPersonal" id="direccion"
-                                                                                    placeholder="Ej: Antonio Varas 1200" value='{{ registro.personalDireccion }}'>
+                                                                                    placeholder="Ej: Antonio Varas N° 1200" value='{{ registro.personalDireccion }}'>
                                                                             </div>                                                                   
                                                                             <div class="dropdown mb-3">
                                                                                 <button class="btn btn-dark dropdown-toggle fs-5 rounded-5" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -162,7 +162,7 @@
                                                                             </div>
                                                                             <div class="form-group mb-3 text-start">
                                                                                 <label class="form-label fw-bold" for="cargoSueldo">Sueldo</label>
-                                                                                <input class="form-control" type="number" step="0.01" min="0" name="cargoSueldo" id="cargoSueldo" value="{{ registro.cargo.cargoSueldo }}" placeholder="Ej: 550602.27">
+                                                                                <input class="form-control" type="number" step="1" min="500000" name="cargoSueldo" id="cargoSueldo" value="{{ registro.cargo.cargoSueldo }}" placeholder="Ej: 550602">
                                                                             </div>
                                                                             <div class="form-group mb-3 text-start">
                                                                                 <label class="form-label fw-bold" for="fechaIngreso">Fecha Ingreso <strong class="text-primary">mm/dd/yyyy</strong></label>

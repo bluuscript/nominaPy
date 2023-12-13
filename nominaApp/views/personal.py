@@ -100,7 +100,7 @@ def  modificar_registro(request):
                 # Datos Personales
                 personalRut=str(rut_personal), personalNombre=str(nombre_personal), personalGenero=str(genero_personal), personalDireccion=str(direccion_personal), telefonosPersonal=list(telefonos_personal),
                 # Datos Laborales
-                cargoNombre=str(cargo_personal), cargoSueldo = float(cargo_sueldo), cargoFechaIngreso=datetime(year=año, month=mes, day=dia), departamentoNombre=str(departamento_personal), areaNombre=str(area_personal),
+                cargoNombre=str(cargo_personal), cargoSueldo = int(cargo_sueldo), cargoFechaIngreso=datetime(year=año, month=mes, day=dia), departamentoNombre=str(departamento_personal), areaNombre=str(area_personal),
                 # Datos Contactos de Emergencia
                 contactoRut=str(rut_contacto), contactoNombre=str(nombre_contacto), contactoRelacionPersonal=str(relacion_contacto_personal), telefonosContacto=list(telefonos_contacto),
                 # Datos Cargas Familiares 
@@ -110,14 +110,14 @@ def  modificar_registro(request):
             modificar_registro = nuevo_registro.update(personal_rut = rut_personal)
             if modificar_registro.acknowledged == True:
                 if tipo_personal == "PE":
-                    return redirect(f"/personal/mi-registro/?actualizar=success")
+                    return redirect(f"/personal/mi-registro/?modificar_registro=exitoso")
                 else:
-                    return redirect(f"/rrhh/mi-registro/?actualizar=success")
+                    return redirect(f"/rrhh/mi-registro/?modificar_registro=exitoso")
             else:
                 if tipo_personal == "PE":
-                    return redirect(f"/personal/mi-registro/?actualizar=fail")
+                    return redirect(f"/personal/mi-registro/?modificar_registro=falló")
                 else:
-                    return redirect(f"/rrhh/mi-registro/?actualizar=success")
+                    return redirect(f"/rrhh/mi-registro/?modificar_registro=falló")
     else:
         # Usuario no esta autenticado devolver a index login page
          return redirect("/")

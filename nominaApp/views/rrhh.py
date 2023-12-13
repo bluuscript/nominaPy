@@ -119,7 +119,10 @@ def nuevo_registro_personal(request):
                 # Datos Personal
                 nombre_personal = request.POST["nombrePersonal"]
                 genero_personal = request.POST["generoPersonal"]
-                direccion_personal = request.POST["direccionPersonal"]
+                # Dirección 
+                direccion_texto = request.POST["direccionTexto"]
+                direccion_numero = request.POST["direccionNumero"]
+                direccion_personal = direccion_texto + " N° " + direccion_numero
                 # Agregar posibilidad de más telefonos 
                 telefonos_personal = []
                 telefono_personal = request.POST["telefonoPersonal"]
@@ -151,7 +154,7 @@ def nuevo_registro_personal(request):
                     # Datos Personales
                     personalRut=str(rut_personal), personalNombre=str(nombre_personal), personalGenero=str(genero_personal), personalDireccion=str(direccion_personal), telefonosPersonal=list(telefonos_personal),
                     # Datos Laborales
-                    cargoNombre=str(cargo_personal), cargoSueldo = float(cargo_sueldo), cargoFechaIngreso=datetime(year=año, month=mes, day=dia), departamentoNombre=str(departamento_personal), areaNombre=str(area_personal),
+                    cargoNombre=str(cargo_personal), cargoSueldo = int(cargo_sueldo), cargoFechaIngreso=datetime(year=año, month=mes, day=dia), departamentoNombre=str(departamento_personal), areaNombre=str(area_personal),
                     # Datos Contactos de Emergencia
                     contactoRut=str(rut_contacto), contactoNombre=str(nombre_contacto), contactoRelacionPersonal=str(relacion_contacto_personal), telefonosContacto=list(telefonos_contacto),
                     # Datos Cargas Familiares 
@@ -243,6 +246,7 @@ def  modificar_registro_personal(request):
             nuevo_rut_personal = request.POST["nuevoRutPersonal"]
             nombre_personal = request.POST["nombrePersonal"]
             genero_personal = request.POST["generoPersonal"]
+            # Dirección 
             direccion_personal = request.POST["direccionPersonal"]
             # Agregar posibilidad de más telefonos 
             telefonos_personal = []
@@ -275,7 +279,7 @@ def  modificar_registro_personal(request):
                 # Datos Personales
                 personalRut=str(nuevo_rut_personal), personalNombre=str(nombre_personal), personalGenero=str(genero_personal), personalDireccion=str(direccion_personal), telefonosPersonal=list(telefonos_personal),
                 # Datos Laborales
-                cargoNombre=str(cargo_personal), cargoSueldo = float(cargo_sueldo), cargoFechaIngreso=datetime(year=año, month=mes, day=dia), departamentoNombre=str(departamento_personal), areaNombre=str(area_personal),
+                cargoNombre=str(cargo_personal), cargoSueldo = int(cargo_sueldo), cargoFechaIngreso=datetime(year=año, month=mes, day=dia), departamentoNombre=str(departamento_personal), areaNombre=str(area_personal),
                 # Datos Contactos de Emergencia
                 contactoRut=str(rut_contacto), contactoNombre=str(nombre_contacto), contactoRelacionPersonal=str(relacion_contacto_personal), telefonosContacto=list(telefonos_contacto),
                 # Datos Cargas Familiares 

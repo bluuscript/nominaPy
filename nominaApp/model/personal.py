@@ -7,7 +7,7 @@ class Personal:
                  # Datos Personales
                  personalRut = str, personalNombre = str, personalGenero = str, personalDireccion = str,  telefonosPersonal = list,
                  # Datos Laborales
-                 cargoNombre = str, cargoFechaIngreso = datetime, cargoSueldo = float, departamentoNombre = str, areaNombre = str,
+                 cargoNombre = str, cargoFechaIngreso = datetime, cargoSueldo = int, departamentoNombre = str, areaNombre = str,
                  # Datos Contactos de Emergencia
                  contactoRut = str, contactoNombre = str, contactoRelacionPersonal = str, telefonosContacto = list, 
                  # Datos Cargas
