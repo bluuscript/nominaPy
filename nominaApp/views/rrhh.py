@@ -36,9 +36,9 @@ def nomina_personal(request):
         # Mostrar Nomina en caso de peticion  de tipo GET
         if request.method == "GET":
             # Recuperar Filtros
-            buscarCargo = request.GET.get("cargo") if "cargo" in request.GET else None
-            buscarGenero = request.GET.get("genero") if "genero" in request.GET else None
-            buscarFechaIngreso = request.GET.get("fechaIngreso") if "fechaIngreso" in request.GET else None
+            buscarCargo = request.GET.get("cargo") if "cargo" in request.GET else ""
+            buscarGenero = request.GET.get("genero") if "genero" in request.GET else ""
+            buscarFechaIngreso = request.GET.get("fechaIngreso") if "fechaIngreso" in request.GET else ""
             # año, mes, dia = map(int, buscarFechaIngreso.split("-"))
             
             # Recuperar numero de la pagina 
