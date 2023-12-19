@@ -31,16 +31,36 @@
                     <h1 class="text-center fs-2 fw-bold">Nómina del Personal</h1>
                     <hr>
                     <div class="vh-100">
-                        <form class="row mb-4 mt-4" method="post">
-                            <div class="form-group col-6 col-md-6 text-start">
-                                <label class="form-label" id="buscar" for="campo">Buscar Por Cargo, Género:</label>
-                                <input class="form-control" type="text" name="campo" id="campo"
-                                    placeholder=" Ej:  Repartidor ó Femenino" autocomplete="off">
-                            </div>
-                            <div class="form-group col-6 col-md-6">
-                                <label class="form-label" for="fechaIngreso">Fecha Ingreso</label>
-                                <input class="form-control" type="date" id="fechaIngreso" name="fechaIngreso">
-                            </div>
+                        <form action="{% url 'nomina' %}" class="row rows-cols-4 my-4" method="get">
+                            {% csrf_token %}
+                           <div class="col-4">
+                               <label class="form-label fw-bold" for="cargo">Buscar por Cargo:</label>
+                                <div class="input-group rounded-5 overflow-hidden">
+                                    <!-- Campo de entrada -->
+                                    <input class="form-control" type="text" name="cargo" id="cargo"
+                                        placeholder="Ej: Repartidor" autocomplete="off">
+                                </div>
+                           </div> 
+                           <div class="col-2">
+                                <div class="form-group">
+                                    <label class="form-label fw-bold" for="genero">Género</label>
+                                    <select class="form-select rounded-5" name="genero" id="genero">
+                                        <option value="">Seleccionar</option>
+                                        <option value="Femenino">Femenino</option>
+                                        <option value="Masculino">Masculino</option>
+                                        <option value="Otro">Otro</option>
+                                    </select>
+                                </div>
+                           </div>
+                           <div class="col-4">
+                                <label class="form-label fw-bold" for="fechaIngreso">Fecha Ingreso</label>
+                                <div class="input-group">
+                                    <input class="form-control rounded-5" type="date" id="fechaIngreso" name="fechaIngreso">
+                                </div>
+                           </div>
+                           <div class="col-2 position-relative">
+                                <button type="submit" class="btn btn-lg btn-primary rounded-5 py-2 px-3 ms-2 position-absolute bottom-0">Filtrar</button>
+                           </div>
                         </form>
                         <table class="table table-responsive table-striped table-hover text-center bg-light">
                             <thead>
@@ -70,13 +90,163 @@
                                         <td> {{ registro.cargo.cargoFechaIngreso|date:"d/m/Y" }} </td>
                                         <td>
                                             <div class="btn-group" role="group">
+                                                <!-- Detalle -->
                                                 <div class="col-4 mx-1" style="width: fit-content;">
-                                                    <form action="{% url 'nomina-eliminar-registro' %}" method="post" style="width: fit-content;">
-                                                        {% csrf_token %}
-                                                        <input type="hidden" name="rutPersonal" value="{{ registro.personalRut }}">
-                                                        <button type="submit" class="btn btn-danger rounded rounded-4">Eliminar</button>
-                                                    </form>
+                                                    <!-- Button trigger modal Detalle Registro-->
+                                                    <button type="button" class="btn btn-info rounded rounded-4" data-bs-toggle="modal"
+                                                    data-bs-target="#modalDetalle{{ registro.personalRut  }}">
+                                                        Detalles
+                                                    </button>
+                                                    <!-- Ventana Modal con detalles del registro (registro completo) -->
+                                                    <div class="modal fade" id="modalDetalle{{ registro.personalRut  }}" tabindex="-1"
+                                                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+                                                            <div class="modal-content rounded rounded-4">
+                                                                <div class="modal-header">
+                                                                    <h1 class="modal-title fs-5" id="exampleModalLabel">
+                                                                        Registro - Personal RUT: {{ registro.personalRut }}
+                                                                    </h1>
+                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                                        aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <div class="container-fluid">
+                                                                        <div class="row rows-cols-2">
+                                                                            <h2 class="h2 text-center mt-5 mb-3">Datos Personales</h2>
+                                                                            <div class="col-md-8">
+                                                                                <table class="table rounded-4 text-center overflow-hidden">
+                                                                                    <thead class="text-center">
+                                                                                        <tr class="fs-4">
+                                                                                            <th scope="col">RUT</th>
+                                                                                            <th scope="col">Nombre</th>
+                                                                                            <th scope="col">Género</th>
+                                                                                            <th scope="col">Dirección</th>
+                                                                                        </tr>
+                                                                                    </thead>
+                                                                                    <tbody class="fs-5">
+                                                                                        <tr>
+                                                                                            <td>{{ registro.personalRut }}</td>
+                                                                                            <td>{{ registro.personalNombre }}</td>
+                                                                                            <td>{{ registro.personalGenero }}</td>
+                                                                                            <td>{{ registro.personalDireccion }}</td>
+                                                                                        </tr>
+                                                                                    </tbody>
+                                                                                </table>
+                                                                            </div>
+                                                                            <div class="col-md-4">
+                                                                                <table class="table rounded-5 text-center overflow-hidden">
+                                                                                    <thead>
+                                                                                        <tr class="text-center fs-4">
+                                                                                            <th scope="col">Teléfonos</th>
+                                                                                        </tr>
+                                                                                    </thead>
+                                                                                    <tbody class="fs-5 text-center">
+                                                                                    {% for telefono in registro.telefonosPersonal %}
+                                                                                        <tr>
+                                                                                            <th scope="row">+569 {{ telefono }}</th>
+                                                                                        </tr>
+                                                                                    {% endfor %}
+                                                                                    </tbody>
+                                                                                </table>
+                                                                            </div>
+                                                                        </div>
+                                                                        <h2 class="h2 text-center mt-5 mb-3">Datos Laborales</h2>
+                                                                        <table class="table text-center rounded-4 overflow-hidden">
+                                                                            <thead>
+                                                                                <tr class="fs-4">
+                                                                                    <th scope="col">Cargo</th>
+                                                                                    <th scope="col">Fecha Ingreso</th>
+                                                                                    <th scope="col">Sueldo</th>
+                                                                                    <th scope="col">Departamento</th>
+                                                                                    <th scope="col">Área</th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody class="fs-5">
+                                                                                <tr>
+                                                                                    <td>{{ registro.cargo.cargoNombre }}</td>
+                                                                                    <td>{{ registro.cargo.cargoFechaIngreso|date:"d-m-Y" }}</td>
+                                                                                    <td>{{ registro.cargo.cargoSueldo }}</td>
+                                                                                    <td>{{ registro.cargo.departamentoNombre }}</td>
+                                                                                    <td>{{ registro.cargo.areaNombre }}</td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                        <h2 class="h2 text-center mt-5 mb-3">Contactos de Emergencia</h2>
+                                                                        <div class="row rows-cols-2">
+                                                                            <div class="col-md-8">
+                                                                                <table class="table rounded text-center rounded-4 overflow-hidden">
+                                                                                    <thead>
+                                                                                        <tr class="fs-4">
+                                                                                            <th scope="col">#</th>
+                                                                                            <th scope="col">RUT</th>
+                                                                                            <th scope="col">Nombre</th>
+                                                                                            <th scope="col">Relación Trabajador</th>
+                                                                                        </tr>
+                                                                                    </thead>
+                                                                                    <tbody class="fs-5">
+                                                                                    {% for contacto in  registro.contactosEmergencia %}
+                                                                                        <tr>
+                                                                                            <th scope="row">{{ forloop.counter }}</th>
+                                                                                            <td>{{ contacto.contactoRut }}</td>
+                                                                                            <td>{{ contacto.contactoNombre }}</td>
+                                                                                            <td>{{ contacto.contactoRelacionPersonal }}</td>
+                                                                                        </tr>
+                                                                                    {% endfor %}
+                                                                                    </tbody>
+                                                                                </table>
+                                                                            </div>
+                                                                        {% for contacto in registro.contactosEmergencia %}
+                                                                            <div class="col-md-4">
+                                                                                <table class="table text-center rounded-5 overflow-hidden">
+                                                                                    <thead>
+                                                                                        <tr class="fs-4">
+                                                                                            <th scope="col">Teléfonos</th>
+                                                                                        </tr>
+                                                                                    </thead>
+                                                                                    <tbody class="fs-5">
+                                                                                    {% for telefono in contacto.telefonosContacto %}
+                                                                                        <tr>
+                                                                                            <th scope="row">+569 {{ telefono }}</th>
+                                                                                        </tr>
+                                                                                    {% endfor %}
+                                                                                    </tbody>
+                                                                                </table>
+                                                                            </div>
+                                                                        </div>
+                                                                    {% endfor %}
+                                                                        <h2 class="h2 text-center mt-5 mb-3">Cargas Familiares</h2>
+                                                                        <table class="table text-center rounded rounded-4 overflow-hidden">
+                                                                            <thead>
+                                                                                <tr class="fs-4">
+                                                                                    <th scope="col">#</th>
+                                                                                    <th scope="col">RUT</th>
+                                                                                    <th scope="col">Nombre</th>
+                                                                                    <th scope="col">Género</th>
+                                                                                    <th scope="col">Parentesco</th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody class="fs-5">
+                                                                            {% for carga in registro.cargaFamiliar %}
+                                                                                <tr>
+                                                                                    <th scope="row">{{ forloop.counter }}</th>
+                                                                                    <td>{{ carga.cargaRut }}</td>
+                                                                                    <td>{{ carga.cargaNombre }}</td>
+                                                                                    <td>{{ carga.cargaGenero }}</td>
+                                                                                    <td>{{ carga.cargaParentesco }}</td>
+                                                                                </tr>
+                                                                            {% endfor %}
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-lg btn-primary rounded rounded-4" data-bs-dismiss="modal">Cerrar</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
+                                                <!-- Modificar -->
                                                 <div class="col-4 mx-1" style="width: fit-content;">
                                                     <!-- Button trigger modal Modificar registro-->
                                                     <button type="button" class="btn btn-warning rounded rounded-4" data-bs-toggle="modal" data-bs-target="#modalModificar{{ registro.personalRut }}">
@@ -85,7 +255,7 @@
                                                     <!-- Modal  Modificar-->
                                                     <div class="modal fade" id="modalModificar{{ registro.personalRut }}" tabindex="-1" aria-labelledby="modalModificarLabel" aria-hidden="true">
                                                         <div class="modal-dialog modal-xl modal-dialog-scrollable">
-                                                            <div class="modal-content">
+                                                            <div class="modal-content rounded rounded-4">
                                                                 <div class="modal-header">
                                                                 <h1 class="modal-title fs-5" id="modalModificarLabel">Modificar Registro - Personal RUT: {{ registro.personalRut }}</h1>
                                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -261,166 +431,19 @@
                                                                     </form>
                                                                 </div>
                                                                 <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cerrar</button>
+                                                                    <button type="button" class="btn btn-lg rounded-4 btn-primary" data-bs-dismiss="modal">Cerrar</button>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
+                                                <!-- Eliminar -->
                                                 <div class="col-4 mx-1" style="width: fit-content;">
-                                                    <!-- Button trigger modal Detalle Registro-->
-                                                    <button type="button" class="btn btn-info rounded rounded-4" data-bs-toggle="modal"
-                                                    data-bs-target="#modalDetalle{{ registro.personalRut  }}">
-                                                        Detalles
-                                                    </button>
-                                                    <!-- Ventana Modal con detalles del registro (registro completo) -->
-                                                    <div class="modal fade" id="modalDetalle{{ registro.personalRut  }}" tabindex="-1"
-                                                        aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                        <div class="modal-dialog modal-xl modal-dialog-scrollable">
-                                                            <div class="modal-content rounded rounded-4">
-                                                                <div class="modal-header">
-                                                                    <h1 class="modal-title fs-5" id="exampleModalLabel">
-                                                                        Registro - Personal RUT: {{ registro.personalRut }}
-                                                                    </h1>
-                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                                        aria-label="Close"></button>
-                                                                </div>
-                                                                <div class="modal-body">
-                                                                    <div class="container-fluid">
-                                                                        <div class="row rows-cols-2">
-                                                                            <h2 class="h2 text-center mt-5 mb-3">Datos Personales</h2>
-                                                                            <div class="col-md-8">
-                                                                                <table class="table rounded-4 text-center overflow-hidden">
-                                                                                    <thead class="text-center">
-                                                                                        <tr class="fs-4">
-                                                                                            <th scope="col">RUT</th>
-                                                                                            <th scope="col">Nombre</th>
-                                                                                            <th scope="col">Género</th>
-                                                                                            <th scope="col">Dirección</th>
-                                                                                        </tr>
-                                                                                    </thead>
-                                                                                    <tbody class="fs-5">
-                                                                                        <tr>
-                                                                                            <td>{{ registro.personalRut }}</td>
-                                                                                            <td>{{ registro.personalNombre }}</td>
-                                                                                            <td>{{ registro.personalGenero }}</td>
-                                                                                            <td>{{ registro.personalDireccion }}</td>
-                                                                                        </tr>
-                                                                                    </tbody>
-                                                                                </table>
-                                                                            </div>
-                                                                            <div class="col-md-4">
-                                                                                <table class="table rounded-5 text-center overflow-hidden">
-                                                                                    <thead>
-                                                                                        <tr class="text-center fs-4">
-                                                                                            <th scope="col">Teléfonos</th>
-                                                                                        </tr>
-                                                                                    </thead>
-                                                                                    <tbody class="fs-5 text-center">
-                                                                                    {% for telefono in registro.telefonosPersonal %}
-                                                                                        <tr>
-                                                                                            <th scope="row">+569 {{ telefono }}</th>
-                                                                                        </tr>
-                                                                                    {% endfor %}
-                                                                                    </tbody>
-                                                                                </table>
-                                                                            </div>
-                                                                        </div>
-                                                                        <h2 class="h2 text-center mt-5 mb-3">Datos Laborales</h2>
-                                                                        <table class="table text-center rounded-4 overflow-hidden">
-                                                                            <thead>
-                                                                                <tr class="fs-4">
-                                                                                    <th scope="col">Cargo</th>
-                                                                                    <th scope="col">Fecha Ingreso</th>
-                                                                                    <th scope="col">Sueldo</th>
-                                                                                    <th scope="col">Departamento</th>
-                                                                                    <th scope="col">Área</th>
-                                                                                </tr>
-                                                                            </thead>
-                                                                            <tbody class="fs-5">
-                                                                                <tr>
-                                                                                    <td>{{ registro.cargo.cargoNombre }}</td>
-                                                                                    <td>{{ registro.cargo.cargoFechaIngreso|date:"d-m-Y" }}</td>
-                                                                                    <td>{{ registro.cargo.cargoSueldo }}</td>
-                                                                                    <td>{{ registro.cargo.departamentoNombre }}</td>
-                                                                                    <td>{{ registro.cargo.areaNombre }}</td>
-                                                                                </tr>
-                                                                            </tbody>
-                                                                        </table>
-                                                                        <h2 class="h2 text-center mt-5 mb-3">Contactos de Emergencia</h2>
-                                                                        <div class="row rows-cols-2">
-                                                                            <div class="col-md-8">
-                                                                                <table class="table rounded text-center rounded-4 overflow-hidden">
-                                                                                    <thead>
-                                                                                        <tr class="fs-4">
-                                                                                            <th scope="col">#</th>
-                                                                                            <th scope="col">RUT</th>
-                                                                                            <th scope="col">Nombre</th>
-                                                                                            <th scope="col">Relación Trabajador</th>
-                                                                                        </tr>
-                                                                                    </thead>
-                                                                                    <tbody class="fs-5">
-                                                                                    {% for contacto in  registro.contactosEmergencia %}
-                                                                                        <tr>
-                                                                                            <th scope="row">{{ forloop.counter }}</th>
-                                                                                            <td>{{ contacto.contactoRut }}</td>
-                                                                                            <td>{{ contacto.contactoNombre }}</td>
-                                                                                            <td>{{ contacto.contactoRelacionPersonal }}</td>
-                                                                                        </tr>
-                                                                                    {% endfor %}
-                                                                                    </tbody>
-                                                                                </table>
-                                                                            </div>
-                                                                        {% for contacto in registro.contactosEmergencia %}
-                                                                            <div class="col-md-4">
-                                                                                <table class="table text-center rounded-5 overflow-hidden">
-                                                                                    <thead>
-                                                                                        <tr class="fs-4">
-                                                                                            <th scope="col">Teléfonos</th>
-                                                                                        </tr>
-                                                                                    </thead>
-                                                                                    <tbody class="fs-5">
-                                                                                    {% for telefono in contacto.telefonosContacto %}
-                                                                                        <tr>
-                                                                                            <th scope="row">+569 {{ telefono }}</th>
-                                                                                        </tr>
-                                                                                    {% endfor %}
-                                                                                    </tbody>
-                                                                                </table>
-                                                                            </div>
-                                                                        </div>
-                                                                    {% endfor %}
-                                                                        <h2 class="h2 text-center mt-5 mb-3">Cargas Familiares</h2>
-                                                                        <table class="table text-center rounded rounded-4 overflow-hidden">
-                                                                            <thead>
-                                                                                <tr class="fs-4">
-                                                                                    <th scope="col">#</th>
-                                                                                    <th scope="col">RUT</th>
-                                                                                    <th scope="col">Nombre</th>
-                                                                                    <th scope="col">Género</th>
-                                                                                    <th scope="col">Parentesco</th>
-                                                                                </tr>
-                                                                            </thead>
-                                                                            <tbody class="fs-5">
-                                                                            {% for carga in registro.cargaFamiliar %}
-                                                                                <tr>
-                                                                                    <th scope="row">{{ forloop.counter }}</th>
-                                                                                    <td>{{ carga.cargaRut }}</td>
-                                                                                    <td>{{ carga.cargaNombre }}</td>
-                                                                                    <td>{{ carga.cargaGenero }}</td>
-                                                                                    <td>{{ carga.cargaParentesco }}</td>
-                                                                                </tr>
-                                                                            {% endfor %}
-                                                                            </tbody>
-                                                                        </table>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-lg btn-primary rounded rounded-4" data-bs-dismiss="modal">Cerrar</button>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                                    <form action="{% url 'nomina-eliminar-registro' %}" method="post" style="width: fit-content;">
+                                                        {% csrf_token %}
+                                                        <input type="hidden" name="rutPersonal" value="{{ registro.personalRut }}">
+                                                        <button type="submit" class="btn btn-danger rounded rounded-4">Eliminar</button>
+                                                    </form>
                                                 </div>
                                             </div>
                                         </td>

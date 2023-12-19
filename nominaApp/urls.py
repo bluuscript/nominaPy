@@ -27,6 +27,7 @@ urlpatterns = [
     path("login/", user_views.login, name="login"),
     path('forgot/', user_views.forgot, name='forgot'),
     path('register/', user_views.register, name='register'),
+    path('terminos/', user_views.terminos, name='terminos'),
     path('logout/', user_views.logout, name='logout'),
     #  Load views for  Personal Empresa 
     path('personal/inicio/', personal_views.inicio, name='personal-inicio'),

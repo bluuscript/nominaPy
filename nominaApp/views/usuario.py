@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, HttpResponse
 from nominaApp.model.usuario import Usuario
 from nominaApp.model.correo import Correo
 from uuid import uuid4
@@ -80,7 +80,13 @@ def register(request):
                 return redirect(f"/?usuario_correo={user_email}&agregar_usuario=exitoso")
             else:
                 return redirect(f"/?usuario_correo={user_email}&agregar_usuario=error")
-        
+
+def terminos(request):
+    with open('./nominaApp/templates/terminos-y-condiciones.pdf', 'rb') as pdf:
+        response = HttpResponse(pdf.read(),content_type='application/pdf')
+        response['Content-Disposition'] = 'filename=some_file.pdf'
+        return response
+     
 def logout(request):
     try:
         del request.session["user_uuid"]

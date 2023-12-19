@@ -35,13 +35,23 @@ def nomina_personal(request):
         tipo_personal = request.session["tipo_personal"]
         # Mostrar Nomina en caso de peticion  de tipo GET
         if request.method == "GET":
+            # Recuperar Filtros
+            buscarCargo = request.GET.get("cargo") if "cargo" in request.GET else None
+            buscarGenero = request.GET.get("genero") if "genero" in request.GET else None
+            buscarFechaIngreso = request.GET.get("fechaIngreso") if "fechaIngreso" in request.GET else None
+            # año, mes, dia = map(int, buscarFechaIngreso.split("-"))
+            
             # Recuperar numero de la pagina 
             num_pagina_actual = int(request.GET["page"])  if "page" in request.GET else 1
             registros_por_pagina = 10
             num_registros_pagina = (num_pagina_actual - 1) * registros_por_pagina
             # Obtener los registros del personal 
             registros_nomina = Personal().get_all(
+                                    # Filtro
+                                    cargo=buscarCargo, genero=buscarGenero, fechaIngreso=buscarFechaIngreso,
+                                    # RUT del personal RRHH
                                     rut_usuario_rrhh = rut_usuario,
+                                    # Paginacíon
                                     numero_pagina = num_pagina_actual - 1,
                                     registros_por_pagina = registros_por_pagina
                                 )
@@ -66,7 +76,7 @@ def nomina_personal(request):
             }
             return render(request, "rrhh/nomina-personal.html", context)
         else:
-            # Metodo POST => Redireccionar a nomina TODO: ACEPTAR POST DE MODIFICAR REGISTRO
+            # Metodo POST => Redireccionar a nomina
             return redirect("/rrhh/nomina/")
     else:
         # Usuario no esta autenticado devovler a index login page

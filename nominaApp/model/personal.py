@@ -1,6 +1,7 @@
 from .db import ConnectDB
 from datetime import datetime
 from pymongo import DESCENDING
+import re
 
 class Personal:
     def __init__(self, 
@@ -47,7 +48,7 @@ class Personal:
                 "cargoNombre":  self.cargoNombre,
                 "cargoFechaIngreso": self.cargoFechaIngreso,
                 "cargoSueldo":  self.cargoSueldo,
-                "departamentoNombre":  self.departamentoNombre,
+                "departamentoNombre": self.departamentoNombre,
                 "areaNombre":  self.areaNombre,
             },
             "cargaFamiliar": [{
@@ -82,11 +83,24 @@ class Personal:
         return result if result is not None else None
     
     # Recuperar todos los registros del personal
-    def get_all(self, rut_usuario_rrhh = str, numero_pagina = int, registros_por_pagina = int):
+    def get_all(self, cargo = str, genero = str, fechaIngreso = str, rut_usuario_rrhh = str, numero_pagina = int, registros_por_pagina = int):
+        
+        regexCargo = re.compile(f"^{cargo}", re.IGNORECASE)
         try:
-            result = self.personalCollection.find(
-                {"personalRut": {"$ne": rut_usuario_rrhh}}
-                ).sort([("cargo.cargoFechaIngreso", DESCENDING)]).skip(numero_pagina * registros_por_pagina).limit(registros_por_pagina)
+            result = self.personalCollection.find({
+                    "$and": [
+                        {
+                            "personalRut": {"$ne": rut_usuario_rrhh}
+                        },
+                        {
+                            "$or": [
+                                {"cargo.cargoNombre": {"$regex": regexCargo}},
+                                {"personalGenero": {"$eq": genero}},
+                                {"cargo.cargoFechaIngreso": {"$eq": fechaIngreso}},    
+                            ]
+                        }
+                    ]
+                }).sort([("cargo.cargoFechaIngreso", DESCENDING)]).skip(numero_pagina * registros_por_pagina).limit(registros_por_pagina)
         except Exception as e:
             print("get registro personal: ",e)
         return result if result is not None else None
