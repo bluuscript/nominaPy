@@ -27,3 +27,14 @@ poetry install --no-root
 ```python
 python manage.py runserver
 ```
+
+# Dependencias
+```toml
+Django = "^4.2.5"
+django-session-timeout = "^0.1.0"
+pymongo = "^4.6.1"
+python-dotenv = "^1.0.0"
+py-bcrypt = "^0.4"
+pytz = "^2023.3.post1"
+whitenoise = "^6.6.0"
+```
